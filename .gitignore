@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+
+# Generated experiment data and artifacts
+data/
+runs/
+artifacts/
+graphify-out/
+
+# Atomic-write and local editor files
+*.tmp
+.DS_Store

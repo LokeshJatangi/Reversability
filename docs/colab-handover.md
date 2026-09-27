@@ -1,6 +1,6 @@
 # Colab handoff
 
-The recommended entry point is [the persistent Colab notebook](../notebooks/baseline_colab.ipynb). Copy the repository to `MyDrive/Reversability` (or `MyDrive/Reversability/repo`), open the notebook in Colab, select a GPU runtime, and run all cells. The notebook performs setup, tests, dataset preparation, a fresh-process batch-capacity search, smoke acceptance, and the full baseline in order.
+The recommended entry point is the [GitHub-hosted Colab notebook](https://colab.research.google.com/github/LokeshJatangi/Reversability/blob/main/notebooks/baseline_colab.ipynb). Select a GPU runtime and run all cells. The notebook clones or refreshes `https://github.com/LokeshJatangi/Reversability.git` under `/content/Reversability`, then performs setup, tests, dataset preparation, a fresh-process batch-capacity search, smoke acceptance, and the full baseline in order. The source checkout is ephemeral; no repository copy is required in Drive.
 
 All irreplaceable artifacts are written directly to `MyDrive/Reversability/artifacts`: frozen data, tokenizer assets and hashes, capacity-search attempts, environment logs, source hashes, live console logs, structured JSONL metrics, configs, latest and best checkpoints, and final summaries. On a new runtime, the notebook recopies the frozen data to local disk for training speed and automatically resumes an incomplete run from the Drive checkpoint. Google Drive for desktop can mirror that known folder to the laptop without a browser download dialog.
 

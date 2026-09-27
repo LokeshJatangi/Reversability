@@ -10,7 +10,7 @@ This repository prepares a frozen FineWeb-Edu token stream and trains an ordinar
 | `baseline_20m_fineweb_edu_50m_v1_smoke` | Validation run | Check the Colab environment, data hashes, forward/backward path, checkpoint, and evaluation on a deliberately small target budget |
 | `baseline_20m_fineweb_edu_50m_v1` | Full experiment | Train the ordinary-autograd baseline on exactly 50M committed training targets |
 
-The smoke run is not a performance result and must use a separate output directory. The full run configuration is [configs/baseline.json](configs/baseline.json). The recommended execution path is the Drive-backed [Colab notebook](notebooks/baseline_colab.ipynb); see [the handoff](docs/colab-handover.md) for persistence behavior and manual commands.
+The smoke run is not a performance result and must use a separate output directory. The full run configuration is [configs/baseline.json](configs/baseline.json). The recommended execution path is the [GitHub-hosted Colab notebook](https://colab.research.google.com/github/LokeshJatangi/Reversability/blob/main/notebooks/baseline_colab.ipynb), which clones source into ephemeral Colab storage and persists only experiment artifacts to Drive; see [the handoff](docs/colab-handover.md) for details.
 
 ## Layout
 

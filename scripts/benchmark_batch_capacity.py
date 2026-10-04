@@ -20,7 +20,7 @@ import torch
 import torch.nn.functional as F
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from reversibility import BaselineLM, ModelConfig
+from reversibility import BaselineLM, ModelConfig, build_model
 
 
 def parse_args() -> argparse.Namespace:
@@ -63,7 +63,7 @@ def candidate_run(args: argparse.Namespace, config: dict) -> int:
         "status": "error",
     }
     try:
-        model = BaselineLM(model_config).to(device).train()
+        model = build_model(config).to(device).train()
         optimizer = torch.optim.AdamW(
             model.parameters(),
             lr=config["learning_rate"],
@@ -82,21 +82,27 @@ def candidate_run(args: argparse.Namespace, config: dict) -> int:
             device=device, generator=generator,
         )
 
+        accumulation = int(config["gradient_accumulation_steps"])
         def update() -> float:
             optimizer.zero_grad(set_to_none=True)
-            with torch.autocast(device_type="cuda", dtype=torch.float16):
-                logits = model(inputs)
-                loss = F.cross_entropy(logits.flatten(0, 1), targets.flatten())
-            scaler.scale(loss).backward()
+            loss_value = 0.0
+            for _ in range(accumulation):
+                with torch.autocast(device_type="cuda", dtype=torch.float16):
+                    logits = model(inputs)
+                    loss = F.cross_entropy(logits.flatten(0, 1), targets.flatten())
+                scaler.scale(loss / accumulation).backward()
+                loss_value += float(loss.detach()) / accumulation
             scaler.unscale_(optimizer)
-            torch.nn.utils.clip_grad_norm_(model.parameters(), config["grad_clip"])
+            norm = torch.nn.utils.clip_grad_norm_(model.parameters(), config["grad_clip"])
             scale_before = scaler.get_scale()
             scaler.step(optimizer)
             scaler.update()
             if scaler.get_scale() < scale_before:
                 raise FloatingPointError("mixed-precision overflow during capacity probe")
+            if not math.isfinite(loss_value) or not torch.isfinite(norm):
+                raise FloatingPointError("nonfinite loss or gradient during capacity probe")
             torch.cuda.synchronize(device)
-            return float(loss.detach())
+            return loss_value
 
         torch.cuda.reset_peak_memory_stats(device)
         startup_loss = update()  # initializes Adam states and includes first-update peaks
@@ -112,6 +118,8 @@ def candidate_run(args: argparse.Namespace, config: dict) -> int:
         payload.update({
             "status": "pass" if peak_reserved <= limit else "insufficient_headroom",
             "valid_targets_per_microstep": args.candidate * sequence_length,
+            "gradient_accumulation_steps": accumulation,
+            "valid_targets_per_optimizer_update": args.candidate * sequence_length * accumulation,
             "startup_loss": startup_loss,
             "measured_losses": losses,
             "startup_peak_allocated_bytes": startup_allocated,
@@ -124,7 +132,9 @@ def candidate_run(args: argparse.Namespace, config: dict) -> int:
             "compute_capability": [properties.major, properties.minor],
         })
     except (torch.OutOfMemoryError, RuntimeError, FloatingPointError) as error:
-        if isinstance(error, RuntimeError) and "out of memory" not in str(error).lower():
+        if isinstance(error, FloatingPointError):
+            payload.update({"status": "numerical_failure", "error": repr(error)})
+        elif isinstance(error, RuntimeError) and "out of memory" not in str(error).lower():
             payload.update({"status": "error", "error": repr(error)})
         else:
             payload.update({"status": "oom", "error": repr(error)})
@@ -178,6 +188,9 @@ def main() -> None:
         result = run_candidate(args, batch)
         attempts.append(result)
         print(json.dumps(result), flush=True)
+        write_json_atomic(args.output.with_suffix(".attempts.json"), {"attempts": attempts})
+        if result["status"] not in {"pass", "oom", "insufficient_headroom"}:
+            raise RuntimeError(f"capacity probe failed for a non-memory reason: {result}")
         if result["status"] == "pass":
             passed = batch
             if batch == args.max_batch:
@@ -196,6 +209,9 @@ def main() -> None:
         result = run_candidate(args, batch)
         attempts.append(result)
         print(json.dumps(result), flush=True)
+        write_json_atomic(args.output.with_suffix(".attempts.json"), {"attempts": attempts})
+        if result["status"] not in {"pass", "oom", "insufficient_headroom"}:
+            raise RuntimeError(f"capacity probe failed for a non-memory reason: {result}")
         if result["status"] == "pass":
             passed = batch
         else:
@@ -210,6 +226,7 @@ def main() -> None:
         "max_batch_tested": args.max_batch,
         "headroom_fraction": args.headroom_fraction,
         "repetitions": args.repetitions,
+        "method": config.get("method", "baseline"),
         "sequence_length": config["sequence_length"],
         "precision": config["precision"],
         "config_sha256": hashlib.sha256(args.config.read_bytes()).hexdigest(),

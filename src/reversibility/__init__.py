@@ -2,4 +2,6 @@
 
 from .model import BaselineLM, ModelConfig
 
-__all__ = ["BaselineLM", "ModelConfig"]
+from .reversible import ReversibleLM, build_model
+
+__all__ = ["BaselineLM", "ModelConfig", "ReversibleLM", "build_model"]

@@ -20,7 +20,7 @@ Restart the runtime if Colab asks. Then return to the repository root.
 !python -m pytest -q
 ```
 
-Expected outcome: six tests pass. These tests use synthetic data and do not download FineWeb-Edu or train an experiment. They include exact interrupted/resumed agreement at an optimizer-update boundary.
+Expected outcome with the current source: 18 tests pass. These tests use synthetic data and do not download FineWeb-Edu or train a full experiment. They include reconstruction/gradient checks and exact interrupted/resumed agreement at an optimizer-update boundary for the baseline and both reversible variants.
 
 ## 3. Dataset preparation: `data_fineweb_edu_gpt2_50m_v1`
 
@@ -108,3 +108,21 @@ If Colab interrupts after a checkpoint, resume with:
 ```
 
 When using the notebook, no end-of-session copy is needed: these files already live in Drive and the dataset has a persistent Drive copy. Do not use the smoke checkpoint to resume the full experiment because its configuration hash and target budget differ.
+
+## Next stage: matched reversible runs
+
+The baseline has completed and been [audited](baseline-artifact-audit-2026-10-01.md). Preserve its artifacts and open the [reversible Colab notebook](https://colab.research.google.com/github/LokeshJatangi/Reversability/blob/main/notebooks/reversible_colab.ipynb). Select a Tesla T4 runtime and run all cells. It clones GitHub source by default; an old `reversible-source.zip` in Drive is ignored unless the explicit offline-bundle flag is enabled.
+
+The notebook requires these existing Drive paths under `MyDrive/Reversability/artifacts`:
+
+- `configs/baseline_colab.json`;
+- `runs/baseline_20m_fineweb_edu_50m_v1/`, including metrics, summary and latest checkpoint;
+- `data/data_fineweb_edu_gpt2_50m_v1/`, including the exact baseline manifest, binaries and tokenizer assets.
+
+The runner enforces the recorded baseline environment: T4, FP16, PyTorch 2.11.0+cu128, CUDA runtime 12.8, NumPy 2.1.3 and Python 3.13.15. If Colab supplies different versions, preserve the error log and reconcile the environment before training; changing the comparison controls needs a recorded protocol amendment. The local five-asset data manifest is not a replacement for the actual two-asset Colab manifest.
+
+CUDA reconstruction/gradient/optimizer gates run first, followed by separate 65,536-target smokes and exactly 50M-target midpoint and Euler runs. Both use physical batch 29, accumulation 2, effective batch 58, seed 1337 and the frozen baseline target/evaluation stream. No baseline rerun is needed. A correctness failure stops the workflow; CPU success does not establish FP16 GPU acceptance.
+
+Intermediate console logs, structured metrics, immutable configs/source snapshots, latest/best checkpoints and the review proposal are saved under `artifacts/reversible-v1` as work proceeds. Rerunning the notebook resumes incomplete training from the latest checkpoint and validates already completed runs.
+
+After both matched runs, share the `reversible-v1` artifacts for the required planning session. Review loss trajectories, correctness, throughput, memory, failures and remaining Colab budget. Record the decision before enabling the maximum cell. The predeclared loss cutoff is 5.562294847167969; a method must also pass correctness. The assignment finishes after the selected maximum-batch experiment and the full comparison report.

@@ -1,6 +1,6 @@
 # Progress
 
-Last updated: 2026-09-28.
+Last updated: 2026-10-04.
 
 ## Confirmed decisions
 
@@ -9,8 +9,8 @@ Last updated: 2026-09-28.
 - Every full run uses **exactly 50,000,000 FineWeb-Edu training targets**. The former 25M English, 12.5M code, and 12.5M math mixture is retired by user direction.
 - Dataset preparation is pinned to `HuggingFaceFW/fineweb-edu`, config `sample-10BT`, requested revision `v1.0.0`, and the GPT-2 tokenizer commit encoded in the preparation script. Resolved commits and binary hashes will be frozen in the generated manifest.
 - Experiment order: baseline; Euler and midpoint at the baseline physical and effective batch sizes; selected reversible variant at its maximum feasible physical batch size under a fixed memory budget.
-- Initial execution venue: Colab, as recommended in the supplied plan. Hardware availability, memory, runtime limits, and suitability have not been measured.
-- The primary reversible specification is now supplied: *Reversing Large Language Models for Efficient Training and Fine-Tuning* (arXiv:2512.02056). The assignment's midpoint maps to Eq. 2.4 and “Euler/oiler” maps to the Hamiltonian staggered update resembling symplectic Euler in Eqs. 2.8–2.9; implementation and independent validation remain pending.
+- Execution venue: Colab. The completed baseline ran on a Tesla T4 with FP16; its capacity, timing and memory measurements are recorded below. Reversible runs require the same recorded hardware/software controls.
+- Primary reversible specification: *Reversing Large Language Models for Efficient Training and Fine-Tuning* (arXiv:2512.02056). Midpoint maps to Eq. 2.4 and “Euler/oiler” to the Hamiltonian staggered update resembling symplectic Euler in Eqs. 2.8–2.9. Both are implemented with passing CPU correctness gates; FP16 CUDA acceptance remains pending.
 - Moonwalk (arXiv:2402.14212) is an optional post-core feasibility study, not a replacement for the required midpoint/Euler runs.
 - RevFFN, Moonwalk, leapfrog, scaling grids, and 70B engineering are explicitly deferred until the six-stage core assignment is complete and its report is accepted or the Admin reprioritizes the work. The active 20M experiment remains a dense Transformer.
 - A recorded planning checkpoint will occur after the baseline and matched-batch midpoint/Euler runs, before the selected reversible maximum-batch run and scaling extensions.
@@ -58,26 +58,61 @@ The first offline test run found that the 8-layer draft had 21,389,824 parameter
 
 ## Results and artifacts
 
-**No training experiments have run and no performance results exist.** FineWeb-Edu preparation is complete locally, but there are no measured training losses, throughput values, peak-memory values, model checkpoints, or training logs. Dataset preparation and offline synthetic correctness tests are validation evidence, not experimental performance evidence.
+The imported Colab artifacts were audited on 2026-10-01. **The baseline completed exactly 50,000,000 training targets**, with final validation and both final/best checkpoints intact. The run timestamps are 2026-09-27 18:58:53–19:17:32 UTC; the export folder date is not the experiment date. Earlier no-results statements above describe historical local verification before these artifacts were available.
+
+- Artifact root: `artifacts-20260930T183134Z-1-001/artifacts` (ignored by Git; preserve separately).
+- Tesla T4, FP16, PyTorch 2.11.0+cu128, CUDA runtime 12.8; 20,340,736 trainable parameters; seed 1337; context 512.
+- Capacity search selected physical batch **29**, with three repeated complete updates and 10% reserved-VRAM headroom. Batch 30 failed the headroom gate. Accumulation **2**, effective batch **58** sequences, regular update **29,696** valid targets.
+- Full baseline: **1,684 optimizer updates**, final partial update **21,632** targets, final/best validation loss **5.462294847167969** on **1,000,000** held-out targets; final training-window loss **5.472444974459135**.
+- Measured training-process elapsed time **1,119.090 seconds** (18m39s), including validation/checkpoint overhead; **44,679.159 valid targets/s** end to end. Peak allocated/reserved CUDA memory **10.030/12.766 GiB**. This is total GPU allocation, not isolated activation memory or a separately timed steady-state throughput result.
+- Smoke completed its separate **65,536-target** budget in three updates, with finite validation loss **10.6698841640625**. It is excluded from the full-run budget. Six offline tests passed on Colab.
+- One full-run startup, no logged overflow retries or resumed segments, and no failure/truncation in the full training logs. Both checkpoints load on CPU, contain the 50M cursor and complete optimizer/scaler/RNG fields, and have finite model tensors. Dataset binaries, both recorded tokenizer assets, config/manifest hashes, and all 18 files in the source snapshot passed independent verification.
+- Detailed evidence, commands, validation trajectory, hashes, and measurement limitations: [baseline artifact audit](docs/baseline-artifact-audit-2026-10-01.md).
+
+No restart or resume of this completed baseline is needed. Monetary cost and Colab compute-unit use were not supplied; no estimate is presented as a measurement.
 
 ## Pending work and blockers
 
 | Work | Status / prerequisite |
 | --- | --- |
-| Baseline implementation | Implemented and offline tests pass; Colab smoke validation remains pending |
+| Baseline implementation | Implemented; local and Colab offline tests pass; Colab smoke accepted |
 | Frozen data and evaluation manifest | Complete and independently hash-validated locally; notebook will validate a bundled copy or prepare/persist its own Drive copy |
-| Notebook reuse | Pending: locate the inspected notebook and verify its loss checks and chunked cross-entropy |
-| Reversible Euler implementation | Paper supplied; exact symplectic-Euler-like Hamiltonian recurrence and backward implementation still pending correctness work |
-| Midpoint implementation | Pending: define the exact formulation and validate states and gradients |
-| Colab smoke validation | Pending: run `baseline_20m_fineweb_edu_50m_v1_smoke` through the persistent notebook |
-| Hardware and batch-size benchmarking | Harness complete; measured capacity search remains pending on the assigned Colab GPU |
-| Full baseline training | Pending: user runs `baseline_20m_fineweb_edu_50m_v1` after dataset and smoke checks |
-| Reversible comparisons | Pending on paper, implementation, and correctness gates |
+| Older notebook reuse | Unverified inherited suggestion; not required for the implemented full-vocabulary loss pipeline |
+| Reversible Euler implementation | Eqs. 2.8–2.9 implemented with inverse backward and ordinary-autograd reference; CPU gates pass, CUDA gates pending |
+| Midpoint implementation | Eqs. 2.4–2.5 implemented, h=0.5, with inverse backward/reference; CPU gates pass, CUDA gates pending |
+| Colab smoke validation | Complete: 65,536 targets; finite validation and preserved checkpoint |
+| Hardware and batch-size benchmarking | Complete on Tesla T4: batch 29 passes, batch 30 fails 10% headroom |
+| Full baseline training | Complete and audited: exactly 50M targets, final validation/checkpoints preserved |
+| Reversible comparisons | Implemented staged Colab workflow; CUDA correctness/smoke/matched training pending |
 
 ## Next steps
 
-1. Copy the repository to `MyDrive/Reversability` (including the validated `data/fineweb_edu_gpt2_50m_v1` directory if convenient), open [the Colab notebook](notebooks/baseline_colab.ipynb), select a GPU runtime, and run all cells. It installs, tests, verifies or prepares the dataset, measures baseline batch capacity, and runs the named smoke validation with persistent artifacts.
-2. Let the notebook start `baseline_20m_fineweb_edu_50m_v1` only after the smoke evidence is accepted; preserve its manifest, frozen runtime configuration, capacity report, console log, metrics, summaries, and latest/best checkpoints in Drive.
-3. After the baseline completes, document and correctness-test the supplied paper's midpoint and symplectic-Euler-like Hamiltonian formulations before any reversible full run.
+1. Preserve the imported baseline artifact bundle and its source snapshot; do not rerun or resume the completed baseline.
+2. Open the [reversible Colab notebook](https://colab.research.google.com/github/LokeshJatangi/Reversability/blob/main/notebooks/reversible_colab.ipynb) on a T4 with the baseline Drive artifacts intact. Run all cells to verify GPU/software/data controls and CUDA correctness before training. Methods, CPU gates and loss cutoff are already documented/frozen.
+3. Let the notebook run separate smokes and each accepted reversible variant for exactly 50M targets using physical batch 29, accumulation 2, effective batch 58, and the frozen data/evaluation controls. Bring its `artifacts/reversible-v1` results back for review.
+4. Hold the required focused planning checkpoint after both matched runs, then finish selected-variant capacity/training and the core report. Deferred extensions remain out of scope.
 
 For each future work entry, record the date, completed work, exact commands and configuration, artifacts, findings, blockers, and next steps. For experiments also include hardware, precision, seed, target counters, and whether the run is a probe, partial run, or completed full run.
+
+## Reversible implementation and verification — 2026-10-01
+
+- User authorized implementing required midpoint/Euler methods and preparing experiments through the selected maximum-batch stage. Preserved the existing fully autonomous preference and scope lock.
+- Read the supplied paper's PDF equations 2.4/2.5 and 2.8/2.9 and experimental details. No author code repository was located; nanoGPT is only the cited hyperparameter reference. This is an independent paper-based implementation. See [method specification](docs/reversible-methods.md).
+- Implemented a stack-level custom autograd Function in `src/reversibility/reversible.py`. It retains the final hidden-state pair and parameter references, reconstructs one layer at a time, and returns gradients through normal autograd. Both variants share the baseline architecture and exactly **20,340,736** parameters (zero count difference). Explicit boundary choice: both starting states equal the embedding; midpoint h=0.5; Euler unit coefficients. Dropout/compilation/higher-order gradients are not supported by the reconstruction path.
+- Added local config templates, an immutable staged study runner, and a separate [Colab notebook](notebooks/reversible_colab.ipynb). It preserves the completed baseline; source, configs, logs, smoke/matched runs, review proposal/decision, capacity and maximum-run artifacts use `artifacts/reversible-v1`. Loss cutoff is frozen at baseline +0.10 nats before reversible runs. GPU, software and exact baseline dataset manifest are checked.
+- Capacity probes now exercise the actual configured accumulation, distinguish numerical failures from memory failures, stop on non-memory errors, and persist attempt history. Maximum phase requires both completed matched runs and the recorded planning checkpoint, then independently confirms the chosen accumulation and logs effective-batch/update-count confounds.
+- Fixed CUDA checkpoint loading to restore checkpoints through CPU so saved CPU RNG tensors remain suitable for `torch.set_rng_state`; optimizer loading then restores state to parameter devices. Synthetic baseline and both reversible interrupted/resumed equivalence tests pass.
+- Verification: `OMP_NUM_THREADS=1 python3 -m pytest -q` → **18 passed in 5.79s**, with the existing Requests version warning. Python and both notebook code-cell compilation passed. `git diff --check` passed.
+- `OMP_NUM_THREADS=1 python3 scripts/validate_reversible.py --device cpu --output runs/correctness/reversible_cpu_v2_final.json` → **40 cases passed**, including full-width/context core probes. Maximum relative L2 optimizer-update error: FP64 **9.83e-14**, FP32 **3.38e-5**. These are synthetic correctness measurements, excluded from training targets, not language-model quality/performance results.
+- Policy v1 failed the full-width midpoint FP32 post-Adam parameter gate at maximum absolute difference **3.24247e-5**. Failure report remains in `runs/correctness/reversible_cpu.json`. The documented v2 amendment separates optimizer tolerance from state/gradient tolerance and adds a strict global update-L2 check; no reversible training preceded this amendment.
+- Local PyTorch 2.9.1+cu128, Python 3.12.2, CUDA availability **false**. No FP16 GPU gate, reversible GPU smoke/full training, selected method, maximum-batch measurement, or cost measurement has run. CPU acceptance must not be described as CUDA acceptance.
+- Handoff: `artifacts/reversible-source.zip` bundles current implementation/docs/tests/notebooks and CPU correctness evidence. Place it in `MyDrive/Reversability` and open `notebooks/reversible_colab.ipynb`. Run All executes matched phases, then stops for the required planning review; maximum execution remains disabled until the review is recorded. Source changes have not been committed or published in this session; existing user changes and previous notes remain intact.
+
+## Readiness review and Git handoff — 2026-10-04
+
+- Found the completed baseline artifacts and pending reversible implementation beyond the older session note. Rechecked metrics/summary, both checkpoints' exact 50M target cursor and step 1,684, finite tensors, and checkpoint SHA-256 values; they agree with the baseline audit. No baseline rerun is needed.
+- Revalidated the implementation with `OMP_NUM_THREADS=1 python3 -m pytest -q`: **18 passed in 6.19s**; the existing Requests dependency warning remains. Both notebook code-cell compilation and all 29 local links in current top-level documentation passed; `git diff --check` passed.
+- Repeated the full CPU correctness grid with `OMP_NUM_THREADS=1 python3 scripts/validate_reversible.py --device cpu --output runs/correctness/reversible_cpu_2026-10-04.json`: **40 cases passed**. Maximum relative optimizer-update L2 errors were FP64 **9.82862e-14** and FP32 **3.38282e-5**. Report SHA-256: `6e7aa36adb76d7747233cce6717ba1d9dada8d6f1f122c46aa51d00a9e388f91`; the report remains in ignored local experiment artifacts.
+- Finished the GitHub handoff: the reversible notebook clones GitHub by default, ignoring old Drive ZIPs unless explicitly selected. Immutable study snapshots now also include requirements, all config templates and AGENTS.md. Updated README, documentation index and Colab instructions to reflect completed baseline results and the actual next stage.
+- Local CUDA availability remains false; `nvidia-smi` is absent. CUDA gates, matched reversible training, selection/planning review, maximum-batch experiment and final comparison report remain pending. Cost and reversible savings remain unmeasured.
+- Git commit includes the pending midpoint/Euler source, configs, tests, staged runner, notebook, method policy, baseline audit and handoff notes. The optional source ZIP is now a historical fallback, not the required execution path.

@@ -1,6 +1,6 @@
 # Reversibility experiment documentation
 
-This repository contains dataset preparation and ordinary-autograd baseline code. FineWeb-Edu download, hardware benchmarking, and training remain pending for the user to run in Colab; no experimental performance results exist.
+The ordinary-autograd baseline is complete at exactly 50M targets and its imported logs/checkpoints have been audited. Midpoint and Hamiltonian Euler implementations pass CPU gates; CUDA gates and reversible training remain pending.
 
 Recommended reading order:
 
@@ -9,5 +9,7 @@ Recommended reading order:
 3. [Colab handoff](colab-handover.md): named dataset, smoke, full-run, and resume commands.
 4. [Experiment plan](experiment-plan.md): controlled baseline and reversible comparisons, token accounting, validation, and measurement.
 5. [Research roadmap](research-roadmap.md): follow-up studies and the evidence needed for larger-scale claims.
+6. [Baseline artifact audit](baseline-artifact-audit-2026-10-01.md): completed-run measurements, hashes and limitations.
+7. [Reversible methods](reversible-methods.md): equations, study choices and precision-specific correctness policy.
 
-The agreed target is approximately 20M trainable parameters with exactly 50,000,000 FineWeb-Edu training targets per full run. The former English/code/math mixture is retired. The reversible Euler implementation awaits the supplied paper. Treat all experiments as pending until their commands, configuration, artifacts, and measured outcomes are recorded in Progress.md.
+The agreed target is approximately 20M trainable parameters with exactly 50,000,000 FineWeb-Edu training targets per full run. The next execution entry point is the [reversible Colab notebook](https://colab.research.google.com/github/LokeshJatangi/Reversability/blob/main/notebooks/reversible_colab.ipynb). Keep the baseline Drive artifacts and use the same GPU/software; the workflow stops before training if controls differ or correctness fails. Measured outcomes and pending stages are recorded in Progress.md.

@@ -22,7 +22,7 @@ import torch
 import torch.nn.functional as F
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from reversibility import BaselineLM, ModelConfig
+from reversibility import BaselineLM, ModelConfig, build_model
 
 
 def parse_args() -> argparse.Namespace:
@@ -147,7 +147,7 @@ def main() -> None:
     if torch.cuda.is_available(): torch.cuda.manual_seed_all(seed)
     device = torch.device(args.device)
     model_config = ModelConfig(**config["model"])
-    model = BaselineLM(model_config).to(device)
+    model = build_model(config).to(device)
     parameter_count = model.parameter_count()
     optimizer = torch.optim.AdamW(model.parameters(), lr=config["learning_rate"],
                                   betas=(config["beta1"], config["beta2"]),
@@ -184,7 +184,7 @@ def main() -> None:
     config_hash = hashlib.sha256(args.config.read_bytes()).hexdigest()
     manifest_hash = file_sha256(manifest_path)
     if args.resume:
-        checkpoint = torch.load(args.resume, map_location=device, weights_only=False)
+        checkpoint = torch.load(args.resume, map_location="cpu", weights_only=False)
         if checkpoint["config_sha256"] != config_hash or checkpoint["manifest_sha256"] != manifest_hash:
             raise RuntimeError("checkpoint configuration or dataset manifest mismatch")
         if checkpoint.get("target_budget") != max_targets:
@@ -222,6 +222,9 @@ def main() -> None:
     startup = {
         "experiment_name": config["experiment_name"],
         "parameters": parameter_count,
+        "method": config.get("method", "baseline"),
+        "backward_mode": config.get("backward_mode", "autograd"),
+        "step_size": config.get("step_size"),
         "architecture": config["model"],
         "device": str(device),
         "precision": precision if device.type == "cuda" else "fp32",

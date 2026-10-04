@@ -1,6 +1,6 @@
 # Reversibility experiment documentation
 
-The ordinary-autograd baseline is complete at exactly 50M targets and its imported logs/checkpoints have been audited. Midpoint and Hamiltonian Euler implementations pass CPU gates; CUDA gates and reversible training remain pending.
+The baseline and both matched reversible runs are complete at exactly 50M targets. Their imported logs/checkpoints have been audited, and all 60 CUDA correctness cases passed. Midpoint alone meets the loss cutoff. Planning-budget confirmation, maximum-batch training and the final comparison report remain pending.
 
 Recommended reading order:
 
@@ -11,5 +11,6 @@ Recommended reading order:
 5. [Research roadmap](research-roadmap.md): follow-up studies and the evidence needed for larger-scale claims.
 6. [Baseline artifact audit](baseline-artifact-audit-2026-10-01.md): completed-run measurements, hashes and limitations.
 7. [Reversible methods](reversible-methods.md): equations, study choices and precision-specific correctness policy.
+8. [Matched-run audit](matched-run-audit-2026-10-04.md): measured losses/memory/time, restart history, CUDA acceptance, artifact integrity and planning-review findings.
 
 The agreed target is approximately 20M trainable parameters with exactly 50,000,000 FineWeb-Edu training targets per full run. The next execution entry point is the [reversible Colab notebook](https://colab.research.google.com/github/LokeshJatangi/Reversability/blob/main/notebooks/reversible_colab.ipynb). Keep the baseline Drive artifacts and use the same GPU/software; the workflow stops before training if controls differ or correctness fails. Measured outcomes and pending stages are recorded in Progress.md.

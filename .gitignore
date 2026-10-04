@@ -8,6 +8,7 @@ __pycache__/
 data/
 runs/
 artifacts/
+artifacts-*.zip
 graphify-out/
 
 # Atomic-write and local editor files

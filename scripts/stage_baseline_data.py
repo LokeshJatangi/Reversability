@@ -44,7 +44,8 @@ def resolve_artifacts(root: Path, search_root: Path) -> tuple[Path, dict]:
         return restored[0], baseline_record(restored[0])
     if len(restored) > 1:
         raise ValueError(f"Multiple restored baselines found: {restored}; pass the intended root with --artifacts")
-    recovery = root.parent / "baseline-reference-recovery.zip"
+    recovery = next((root.parent / name for name in ["baseline-inputs-recovery.zip", "baseline-reference-recovery.zip"]
+                     if (root.parent / name).is_file()), root.parent / "baseline-inputs-recovery.zip")
     if recovery.is_file():
         destination = Path(tempfile.mkdtemp(prefix="baseline-recovery-", dir=root.parent))
         with zipfile.ZipFile(recovery) as archive:
@@ -68,7 +69,7 @@ def resolve_artifacts(root: Path, search_root: Path) -> tuple[Path, dict]:
         raise FileNotFoundError(
             f"Expected baseline config at {root / 'configs/baseline_colab.json'}. "
             f"Found {len(found)} baseline artifact roots under {search_root}: {found}. "
-            "Upload baseline-reference-recovery.zip to MyDrive/Reversability and "
+            "Upload baseline-inputs-recovery.zip to MyDrive/Reversability and "
             "rerun for automatic restoration, or restore the baseline export and pass its "
             "actual artifacts directory with --artifacts. Keep config, run logs and dataset together."
         )

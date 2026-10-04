@@ -20,7 +20,7 @@ Restart the runtime if Colab asks. Then return to the repository root.
 !python -m pytest -q
 ```
 
-Expected outcome with the current source: 24 tests pass. These tests use synthetic data and do not download FineWeb-Edu or train a full experiment. They include reconstruction/gradient checks, exact interrupted/resumed agreement at an optimizer-update boundary for the baseline and both reversible variants, and baseline dataset discovery/hash rejection/recovery tests.
+Expected outcome with the current source: 28 tests pass. These tests use synthetic data and do not download FineWeb-Edu or train a full experiment. They include reconstruction/gradient checks, exact interrupted/resumed agreement at an optimizer-update boundary for the baseline and both reversible variants, baseline dataset discovery/hash rejection/recovery, and checkpoint-free baseline reference checks.
 
 ## 3. Dataset preparation: `data_fineweb_edu_gpt2_50m_v1`
 
@@ -116,14 +116,16 @@ The baseline has completed and been [audited](baseline-artifact-audit-2026-10-01
 The notebook requires these existing Drive paths under `MyDrive/Reversability/artifacts`:
 
 - `configs/baseline_colab.json`;
-- `runs/baseline_20m_fineweb_edu_50m_v1/`, including metrics, summary and latest checkpoint;
+- `runs/baseline_20m_fineweb_edu_50m_v1/`, including metrics and summary; baseline weights are optional in Colab and remain preserved locally;
 - `data/data_fineweb_edu_gpt2_50m_v1/`, including the exact baseline manifest, binaries and tokenizer assets.
 
 If these folders have moved or an exported bundle is nested elsewhere in `MyDrive`, the dataset cell searches for baseline config/run logs there. `scripts/stage_baseline_data.py` requires the manifest hash from the baseline startup event and verifies every binary/tokenizer asset before copying. It logs resolved paths in `reversible-v1/data-staging.log`. Existing valid runtime data is reused; other runtime data is preserved when replaced. A newly generated manifest is not a substitute for the recorded baseline manifest.
 
-If the baseline artifacts were deleted from Drive, upload the local `artifacts/baseline-reference-recovery.zip` to `MyDrive/Reversability` once, keeping that filename. Reopen the updated notebook and run all cells. The dataset cell automatically extracts it into a new `baseline-recovery-*/artifacts` directory, verifies the baseline config/data, and uses that restored artifact root for subsequent phases. It reuses the restored folder on later sessions rather than creating duplicate exports. No baseline retraining is required. The ZIP includes frozen data, the full baseline latest/best checkpoints, configs, logs, capacity evidence and original source snapshot; separate smoke checkpoints remain in the original local export.
+If the baseline artifacts were deleted from Drive, upload the local **`artifacts/baseline-inputs-recovery.zip` (74 MB)** to **`MyDrive/Reversability`** once, keeping that filename. Upload it to Drive, not `/content/Reversability` (the ephemeral Git checkout). Reopen the updated notebook and run all cells. The dataset cell automatically extracts it into a new `baseline-recovery-*/artifacts` directory, verifies the baseline config/data, and creates `/content/reversibility-data/data_fineweb_edu_gpt2_50m_v1` for training. It reuses the restored folder on later sessions rather than creating duplicate exports. No baseline retraining is required. The ZIP includes frozen data, configs, logs, capacity evidence and original source snapshot; all checkpoint files remain preserved in the local export. The runner checks baseline summary/metrics/final validation agreement without loading baseline weights; checkpoints remain required for newly trained reversible runs.
 
-The recovery archive was built and all 23 archived files independently hash-verified on 2026-10-04. File size: 528,997,010 bytes (approximately 529 MB); SHA-256: `36c3c448c8d1f3c67bff3dc760d94909abd31705bf18e0f7dbe25bdfcff5f7a6`. To create a new recovery archive from another intact baseline export, use `python scripts/bundle_baseline_reference.py --artifacts <export>/artifacts --output artifacts/baseline-reference-recovery.zip`. The command refuses to overwrite an existing archive.
+The small archive contains 21 hash-verified files, totals 74,211,452 bytes, and has SHA-256 `0e5698f03f087625648d84b32171496cc6a560cabc8b4321734e89f6ceabd84c`. Build it with `python scripts/bundle_baseline_reference.py --artifacts <export>/artifacts --output artifacts/baseline-inputs-recovery.zip --without-checkpoints`. The previously supplied full archive is also accepted if already uploaded.
+
+The optional full archive contains 23 independently hash-verified files, including baseline latest/best checkpoints. File size: 528,997,010 bytes (approximately 529 MB); SHA-256: `36c3c448c8d1f3c67bff3dc760d94909abd31705bf18e0f7dbe25bdfcff5f7a6`. To build it, use `python scripts/bundle_baseline_reference.py --artifacts <export>/artifacts --output artifacts/baseline-reference-recovery.zip`. The bundler refuses to overwrite an existing archive.
 
 The runner enforces the recorded baseline environment: T4, FP16, PyTorch 2.11.0+cu128, CUDA runtime 12.8, NumPy 2.1.3 and Python 3.13.15. If Colab supplies different versions, preserve the error log and reconcile the environment before training; changing the comparison controls needs a recorded protocol amendment. The local five-asset data manifest is not a replacement for the actual two-asset Colab manifest.
 

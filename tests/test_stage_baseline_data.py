@@ -76,12 +76,13 @@ def test_different_manifest_with_same_tokens_is_rejected(tmp_path):
         stage_data(root, tmp_path / "runtime", tmp_path)
 
 
-def test_recovery_zip_restores_into_new_folder(tmp_path):
+@pytest.mark.parametrize("filename", ["baseline-inputs-recovery.zip", "baseline-reference-recovery.zip"])
+def test_recovery_zip_restores_into_new_folder(tmp_path, filename):
     export = tmp_path / "laptop/artifacts"
     fixture(export)
     drive = tmp_path / "MyDrive/Reversability"
     drive.mkdir(parents=True)
-    with zipfile.ZipFile(drive / "baseline-reference-recovery.zip", "w") as archive:
+    with zipfile.ZipFile(drive / filename, "w") as archive:
         for path in export.rglob("*"):
             if path.is_file():
                 archive.write(path, Path("artifacts") / path.relative_to(export))

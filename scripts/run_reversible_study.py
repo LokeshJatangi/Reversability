@@ -51,13 +51,24 @@ def startup(run):
     return next(json.loads(l) for l in (run/'metrics.jsonl').read_text().splitlines() if json.loads(l)['event']=='startup')
 
 
-def completed(run,budget=50_000_000):
+def completed(run,budget=50_000_000,require_checkpoint=True):
     s=json.loads((run/'run_summary.json').read_text())
     if not s['completed_full_target_budget'] or s['committed_targets']!=budget or s['target_budget']!=budget:
         raise RuntimeError(f'incomplete run: {run}')
     if not math.isfinite(s['final_validation_loss']):raise RuntimeError(f'nonfinite validation: {run}')
-    c=torch.load(run/'latest.pt',map_location='cpu',weights_only=False)
-    if c['committed_targets']!=budget or c['step']!=s['optimizer_steps']:raise RuntimeError('checkpoint/summary disagreement')
+    if require_checkpoint:
+        c=torch.load(run/'latest.pt',map_location='cpu',weights_only=False)
+        if c['committed_targets']!=budget or c['step']!=s['optimizer_steps']:raise RuntimeError('checkpoint/summary disagreement')
+    else:
+        # The completed baseline was checkpoint-audited locally. Colab needs its
+        # recorded results and frozen inputs, not trained weights for new runs.
+        events=[json.loads(line) for line in (run/'metrics.jsonl').read_text().splitlines()]
+        summaries=[e for e in events if e['event']=='run_summary']
+        validations=[e for e in events if e['event']=='validation' and e['committed_targets']==budget]
+        if not summaries or any(summaries[-1].get(k)!=v for k,v in s.items()):
+            raise RuntimeError('baseline metrics/summary disagreement')
+        if not validations or validations[-1]['validation_loss']!=s['final_validation_loss']:
+            raise RuntimeError('baseline final validation evidence missing or inconsistent')
     return s
 
 
@@ -96,7 +107,7 @@ def main():
     p.add_argument('--max-batch',type=int,default=256)
     args=p.parse_args();artifacts=args.artifacts.resolve();study=artifacts/'reversible-v1'
     baseline_run=artifacts/'runs/baseline_20m_fineweb_edu_50m_v1'
-    baseline=completed(baseline_run);base=json.loads((artifacts/'configs/baseline_colab.json').read_text())
+    baseline=completed(baseline_run,require_checkpoint=False);base=json.loads((artifacts/'configs/baseline_colab.json').read_text())
     baseline_start=startup(baseline_run)
     if sha(artifacts/'configs/baseline_colab.json')!=baseline_start['config_sha256']:raise RuntimeError('baseline config drift')
     policy={'validation_loss_max_delta_nats':LOSS_DELTA,'baseline_loss':baseline['final_validation_loss'],

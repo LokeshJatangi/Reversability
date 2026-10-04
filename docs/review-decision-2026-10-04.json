@@ -1,0 +1,26 @@
+{
+  "selected_method": "midpoint",
+  "acceptable_methods": ["midpoint"],
+  "policy": {
+    "validation_loss_max_delta_nats": 0.1,
+    "baseline_loss": 5.462294847167969,
+    "selection_order": ["correctness", "loss_acceptance", "lowest_final_loss", "highest_end_to_end_throughput", "lowest_peak_allocated_memory"],
+    "physical_batch": 29,
+    "accumulation": 2,
+    "effective_batch": 58,
+    "target_budget": 50000000,
+    "midpoint_h": 0.5,
+    "boundary_states": "both equal input embedding"
+  },
+  "planning_session_recorded": true,
+  "recorded_date": "2026-10-04",
+  "review_notes": "All 60 CUDA correctness cases passed. Baseline and both matched variants completed exactly 50M targets with equal 20,340,736 parameters and batch controls. Midpoint final loss 5.443028756835938 passes the unchanged 5.562294847167969 cutoff; Euler 5.565652200683593 fails it. Midpoint's validation trajectory is lower at all four evaluations. Matched midpoint saves 12.9031% peak allocated memory but takes 25.0992% longer; no speed or monetary saving established. Exported full runs have one zero-cursor startup each, no training resumes or overflow retries; two cu130 environment preflight failures preceded corrected cu128 execution. Proceed only with midpoint capacity search and a fresh exact-50M maximum-batch run on matching T4/software/source. Keep 10% reserved-memory headroom and three successful repeated updates; preserve effective batch 58 where feasible and disclose any optimization confound. No optional extensions or acceptance-threshold changes.",
+  "remaining_colab_budget": "User reports less than one hour of usage and can restart Colab. Exact remaining runtime and compute units are unknown; a new T4 allocation is not yet verified. Proceed subject to availability and existing hardware/software gates; persist logs and checkpoints to Drive for interruptions. Completed baseline/matched runs must not be repeated.",
+  "protocol_amendments": [],
+  "evidence": {
+    "audit": "docs/matched-run-audit-2026-10-04.md",
+    "review_proposal_sha256": "e2f93e3b75b411af37d97c51121d9acb5f0a74c172d91216ef946a9190a75a22",
+    "source_manifest_sha256": "74aba6d276986fba0115c61a2779a4f998947e71adec171df9db3557dfbce919",
+    "cuda_gate_sha256": "0960e74fc9821bc2173fabe93e22c11e7af67d8fc3630a0b5a6a01caac059ad5"
+  }
+}

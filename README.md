@@ -2,7 +2,7 @@
 
 The ordinary-autograd baseline completed exactly 50,000,000 FineWeb-Edu targets on a Tesla T4: 20,340,736 parameters, final/best validation loss 5.4623, 18m39s training-process time, 44,679 valid targets/s including evaluation/checkpoints, and 10.03 GiB peak allocated GPU memory. See the [artifact audit](docs/baseline-artifact-audit-2026-10-01.md) for evidence and measurement limits.
 
-Midpoint and Hamiltonian Euler pass all 60 CUDA correctness cases and both completed matched 50M-target runs. Midpoint's final validation loss is 5.4430; Euler's 5.5657 fails the predeclared cutoff. Midpoint uses 12.9% less peak allocated GPU memory but takes 25.1% longer at the matched batch. See the [matched artifact audit](docs/matched-run-audit-2026-10-04.md). The assignment remains incomplete until the planning review's budget/availability item, selected maximum-batch run, and final comparison report are finished.
+Midpoint and Hamiltonian Euler pass all 60 CUDA correctness cases and both completed matched 50M-target runs. Midpoint's final validation loss is 5.4430; Euler's 5.5657 fails the predeclared cutoff. Midpoint uses 12.9% less peak allocated GPU memory but takes 25.1% longer at the matched batch. See the [matched artifact audit](docs/matched-run-audit-2026-10-04.md). The planning decision is recorded; follow its [maximum-stage handoff](docs/matched-run-audit-2026-10-04.md#planning-checkpoint-and-next-step). The assignment remains incomplete until the selected maximum-batch run and final comparison report are finished.
 
 ## Named stages
 

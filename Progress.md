@@ -83,16 +83,24 @@ No restart or resume of this completed baseline is needed. Monetary cost and Col
 | Colab smoke validation | Complete: 65,536 targets; finite validation and preserved checkpoint |
 | Hardware and batch-size benchmarking | Complete on Tesla T4: batch 29 passes, batch 30 fails 10% headroom |
 | Full baseline training | Complete and audited: exactly 50M targets, final validation/checkpoints preserved |
-| Reversible comparisons | Both matched 50M runs fully artifact-audited; midpoint alone qualifies. Planning budget/availability item and maximum run pending |
+| Reversible comparisons | Both matched 50M runs fully artifact-audited; midpoint alone qualifies. Planning decision recorded; maximum run pending |
 
 ## Next steps
 
 1. Preserve the imported baseline artifact bundle and its source snapshot; do not rerun or resume the completed baseline.
 2. Preserve the audited export `artifacts-20261004T112021Z-1-001` and corresponding Drive study root. Read the [matched-run audit and planning findings](docs/matched-run-audit-2026-10-04.md); no matched retraining is needed.
-3. Complete the planning review's last item: actual remaining Colab budget/availability. Correctness, trajectories and restart/overflow history are now audited. Record `review-decision.json` with midpoint selected before maximum-batch execution; a proposal alone is not a completed review.
+3. Planning review completed: midpoint selected in [the recorded decision](docs/review-decision-2026-10-04.json). User reports under one hour of usage and can restart Colab; exact remaining quota is unknown. Run the existing reversible notebook setup/data/review cells, then [the maximum-stage handoff cell](docs/maximum-run-colab-cell.py) to persist the decision to the audited Drive study. Do not repeat completed training or delete its artifacts.
 4. Run the selected midpoint capacity/maximum experiment, then finish the core report. Preserve frozen study source during these phases. Deferred extensions remain out of scope.
 
 For each future work entry, record the date, completed work, exact commands and configuration, artifacts, findings, blockers, and next steps. For experiments also include hardware, precision, seed, target counters, and whether the run is a probe, partial run, or completed full run.
+
+## Planning checkpoint completed — 2026-10-04
+
+- User confirmed less than one hour of Colab usage and ability to restart; exact remaining compute units/runtime and a new T4 allocation remain unknown. This is an availability statement, not a measured budget guarantee.
+- Recorded midpoint selection, correctness/trajectory/loss/memory/time findings, failure history and unchanged protocol in `docs/review-decision-2026-10-04.json`.
+- Added `docs/maximum-run-colab-cell.py` to verify the audited proposal/source/CUDA report, install the decision without replacing a differing one, and launch the existing maximum runner. Training source remains frozen and unchanged. Completed baseline/matched runs must not be rerun.
+- Maximum capacity, maximum 50M training and the core report are still pending GPU execution. Logs/checkpoints remain Drive-backed; no optional extensions were started.
+- Verification: decision policy matches the frozen selection policy; all 25 frozen execution-source hashes remain unchanged. Handoff compilation and temporary-study tests passed for decision installation, identical repeat, preservation of a conflicting decision and rejection of changed audit evidence. No GPU training was launched locally. `git diff --check` passed.
 
 ## Reversible implementation and verification — 2026-10-01
 

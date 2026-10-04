@@ -1,6 +1,6 @@
 # Reversibility experiment documentation
 
-The baseline and both matched reversible runs are complete at exactly 50M targets. Their imported logs/checkpoints have been audited, and all 60 CUDA correctness cases passed. Midpoint alone meets the loss cutoff. Planning-budget confirmation, maximum-batch training and the final comparison report remain pending.
+The baseline and both matched reversible runs are complete at exactly 50M targets. Their imported logs/checkpoints have been audited, and all 60 CUDA correctness cases passed. Midpoint alone meets the loss cutoff. The [planning decision](review-decision-2026-10-04.json) is recorded; use the [maximum-stage handoff](matched-run-audit-2026-10-04.md#planning-checkpoint-and-next-step). Maximum-batch training and the final comparison report remain pending.
 
 Recommended reading order:
 

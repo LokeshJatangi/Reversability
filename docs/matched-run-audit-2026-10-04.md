@@ -4,7 +4,7 @@
 
 Midpoint is the sole quality-qualified variant for the maximum-batch stage. It has slightly lower validation loss and lower GPU memory than the baseline, but takes longer at the matched batch size. Euler fails the predeclared loss cutoff. No maximum-batch advantage, monetary saving or scaling inflection has been established.
 
-Stages 1–3 have complete run evidence and stage 4's selection rule identifies midpoint. The planning review's technical evidence is audited here; actual remaining Colab budget/availability is still required before recording the decision and starting stage 5. Maximum-batch capacity/training and the final core report remain pending. This document is an interim audit, not the completed assignment report.
+Stages 1–3 have complete run evidence and stage 4's selection rule identifies midpoint. The planning review is now recorded: the user reports under one hour of Colab usage and can restart; exact remaining quota is unknown. Maximum-batch capacity/training and the final core report remain pending. This document is an interim audit, not the completed assignment report.
 
 ## Evidence and provenance
 
@@ -112,7 +112,16 @@ python3 docs/analysis/plot_matched_results.py --artifacts artifacts-20261004T112
 
 ## Planning checkpoint and next step
 
-Recommend **midpoint**, preserving h=0.5 and all correctness/loss criteria. There is no `review-decision.json`, maximum capacity report or maximum run in this export. Remaining Colab budget/availability was requested but not supplied. Until that final planning item is recorded, keep `planning_session_recorded=false` and leave maximum execution disabled.
+Select **midpoint**, preserving h=0.5 and all correctness/loss criteria. The imported export predates the decision and has no maximum capacity report or maximum run. The user subsequently confirmed under one hour of usage and ability to restart Colab; exact remaining compute units/runtime are unknown and a new T4 must pass the existing gates. The [recorded decision](review-decision-2026-10-04.json) sets `planning_session_recorded=true`; no protocol amendment was made.
+
+Restart a T4 runtime if needed, keep Drive artifacts intact, and run the existing [reversible notebook](../notebooks/reversible_colab.ipynb) setup/data/review cells. Completed smoke/matched runs are skipped by the runner. Refresh the checkout and execute this additional cell:
+
+```python
+run_logged(['git', 'pull', '--ff-only'])
+exec((REPO / 'docs/maximum-run-colab-cell.py').read_text())
+```
+
+The [handoff cell](maximum-run-colab-cell.py) checks exact audited proposal/source/CUDA hashes before saving `ARTIFACTS/reversible-v1/review-decision.json` to Drive. It preserves any differing existing decision and launches the existing maximum runner with logs at `ARTIFACTS/reversible-v1/maximum-orchestration.log`. Handoff/docs changes do not modify frozen training source. Do not restart training from scratch or delete the recovered artifact root.
 
 After recording the review, execute the existing `maximum` phase on the same T4/software and frozen source. It searches repeatedly successful physical batches under 10% reserved-memory headroom, confirms actual accumulation, and starts a fresh 50M-target run. Effective batch 58 must be preserved when feasible; otherwise explicitly report changed batch/update count and the optimization confound. No capacity, runtime or quality outcome is predicted here.
 

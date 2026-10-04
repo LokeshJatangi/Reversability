@@ -1,0 +1,3 @@
+# Match the completed baseline. Install the CUDA wheel from the PyTorch index.
+torch==2.11.0+cu128
+numpy==2.1.3

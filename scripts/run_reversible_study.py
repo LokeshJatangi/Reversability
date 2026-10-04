@@ -11,9 +11,11 @@ import shlex
 import subprocess
 import sys
 import zipfile
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 import torch
+from stage_baseline_data import validate_data
 
 ROOT=Path(__file__).resolve().parents[1]
 NAMES={m:f'{m}_20m_fineweb_edu_50m_v1_matched' for m in ['midpoint','euler']}
@@ -84,13 +86,46 @@ def train(config_path,budget=50_000_000):
     return completed(run,budget)
 
 
+def environment_mismatches(expected, actual):
+    return [f'{key}: {actual[key]} != {expected[key]}'
+            for key in ['torch','numpy','cuda_runtime','python'] if actual[key]!=expected[key]]
+
+
+def check_environment(expected):
+    if not torch.cuda.is_available():raise RuntimeError('CUDA GPU required; run on baseline Tesla T4 in Colab')
+    actual={'torch':torch.__version__,'numpy':__import__('numpy').__version__,
+            'cuda_runtime':torch.version.cuda,'python':platform.python_version()}
+    reference={**expected,'python':expected['python'].split()[0]}
+    failures=environment_mismatches(reference,actual)
+    if torch.cuda.get_device_name()!=expected['accelerator']['name']:
+        failures.append(f"GPU: {torch.cuda.get_device_name()} != {expected['accelerator']['name']}")
+    if failures:raise RuntimeError('baseline environment mismatch: '+'; '.join(failures))
+
+
+def refresh_unused_preflight(study, manifest):
+    existing=study/'source-manifest.json'
+    if not existing.exists() or json.loads(existing.read_text())==manifest:return
+    runs=study/'runs'
+    if any(p.stat().st_size for p in runs.rglob('metrics.jsonl')) or any(runs.rglob('*.pt')):
+        raise RuntimeError('source changed after training started; preserve the frozen study and its source snapshot')
+    # A failed environment preflight is not a training experiment. Retain its
+    # frozen records and gate evidence before preparing the corrected source.
+    history=study/'preflight-history'/uuid.uuid4().hex
+    history.mkdir(parents=True)
+    for name in ['source-manifest.json','configs','correctness']:
+        path=study/name
+        if path.exists():path.rename(history/name)
+    print(f'Preserved unused preflight records at {history}; no training artifacts changed',flush=True)
+
+
 def source_snapshot(study):
     paths=[*sorted((ROOT/'src').rglob('*.py')),*sorted((ROOT/'scripts').glob('*.py')),*sorted((ROOT/'tests').glob('*.py')),
            ROOT/'notebooks/reversible_colab.ipynb',
            *sorted((ROOT/'configs').glob('*.json')),
-           ROOT/'requirements.txt',ROOT/'AGENTS.md',
+           ROOT/'requirements.txt',ROOT/'requirements-colab-constraints.txt',ROOT/'AGENTS.md',
            ROOT/'docs/experiment-plan.md',ROOT/'docs/reversible-methods.md']
     manifest={str(p.relative_to(ROOT)):sha(p) for p in paths}
+    refresh_unused_preflight(study,manifest)
     frozen=freeze(study/'source-manifest.json',manifest)
     digest=sha(frozen);snapshot=study/'source-snapshots'/f'{digest}.zip';snapshot.parent.mkdir(parents=True,exist_ok=True)
     if not snapshot.exists():
@@ -110,6 +145,9 @@ def main():
     baseline=completed(baseline_run,require_checkpoint=False);base=json.loads((artifacts/'configs/baseline_colab.json').read_text())
     baseline_start=startup(baseline_run)
     if sha(artifacts/'configs/baseline_colab.json')!=baseline_start['config_sha256']:raise RuntimeError('baseline config drift')
+    if args.phase!='review':
+        check_environment(baseline_start['environment'])
+        validate_data(args.data_dir,baseline_start['manifest_sha256'])
     policy={'validation_loss_max_delta_nats':LOSS_DELTA,'baseline_loss':baseline['final_validation_loss'],
             'selection_order':['correctness','loss_acceptance','lowest_final_loss','highest_end_to_end_throughput','lowest_peak_allocated_memory'],
             'physical_batch':base['physical_batch_size'],'accumulation':base['gradient_accumulation_steps'],
@@ -137,20 +175,6 @@ def main():
         freeze(study/'review-proposal.json',review)
         print(json.dumps(review,indent=2));print('Hold the required review; save review-decision.json with planning_session_recorded=true, review_notes and remaining_colab_budget. No max search has run.')
         return
-    if not torch.cuda.is_available():raise RuntimeError('CUDA GPU required; run on baseline Tesla T4 in Colab')
-    expected=baseline_start['environment']
-    actual={'torch':torch.__version__,'numpy':__import__('numpy').__version__,'cuda_runtime':torch.version.cuda}
-    if torch.cuda.get_device_name()!=expected['accelerator']['name']:raise RuntimeError('baseline GPU type mismatch')
-    for k,v in actual.items():
-        if v!=expected[k]:raise RuntimeError(f'baseline software mismatch: {k}: {v} != {expected[k]}')
-    if platform.python_version()!=expected['python'].split()[0]:raise RuntimeError('baseline Python version mismatch')
-    if sha(args.data_dir/'manifest.json')!=baseline_start['manifest_sha256']:raise RuntimeError('use the exact Colab baseline dataset manifest')
-    manifest=json.loads((args.data_dir/'manifest.json').read_text())
-    for name,record in manifest['tokenizer']['files'].items():
-        asset=args.data_dir/'tokenizer'/name
-        if asset.stat().st_size!=record['bytes'] or sha(asset)!=record['sha256']:raise RuntimeError('tokenizer hash mismatch')
-    for name in ['train','validation']:
-        if sha(args.data_dir/f'{name}.bin')!=manifest['files'][name]['sha256']:raise RuntimeError('data hash mismatch')
     gate=study/'correctness/cuda.json'
     if not gate.exists():logged([sys.executable,ROOT/'scripts/validate_reversible.py','--device','cuda','--output',gate],study/'correctness/cuda.log')
     result=json.loads(gate.read_text())

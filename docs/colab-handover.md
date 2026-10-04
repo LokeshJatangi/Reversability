@@ -20,7 +20,7 @@ Restart the runtime if Colab asks. Then return to the repository root.
 !python -m pytest -q
 ```
 
-Expected outcome with the current source: 28 tests pass. These tests use synthetic data and do not download FineWeb-Edu or train a full experiment. They include reconstruction/gradient checks, exact interrupted/resumed agreement at an optimizer-update boundary for the baseline and both reversible variants, baseline dataset discovery/hash rejection/recovery, and checkpoint-free baseline reference checks.
+Expected outcome with the current source: 33 tests pass. These tests use synthetic data and do not download FineWeb-Edu or train a full experiment. They include reconstruction/gradient checks, exact interrupted/resumed agreement at an optimizer-update boundary for the baseline and both reversible variants, baseline dataset discovery/hash rejection/recovery, checkpoint-free baseline reference checks, and failed-preflight preservation.
 
 ## 3. Dataset preparation: `data_fineweb_edu_gpt2_50m_v1`
 
@@ -128,6 +128,18 @@ The small archive contains 21 hash-verified files, totals 74,211,452 bytes, and 
 The optional full archive contains 23 independently hash-verified files, including baseline latest/best checkpoints. File size: 528,997,010 bytes (approximately 529 MB); SHA-256: `36c3c448c8d1f3c67bff3dc760d94909abd31705bf18e0f7dbe25bdfcff5f7a6`. To build it, use `python scripts/bundle_baseline_reference.py --artifacts <export>/artifacts --output artifacts/baseline-reference-recovery.zip`. The bundler refuses to overwrite an existing archive.
 
 The runner enforces the recorded baseline environment: T4, FP16, PyTorch 2.11.0+cu128, CUDA runtime 12.8, NumPy 2.1.3 and Python 3.13.15. If Colab supplies different versions, preserve the error log and reconcile the environment before training; changing the comparison controls needs a recorded protocol amendment. The local five-asset data manifest is not a replacement for the actual two-asset Colab manifest.
+
+The reversible notebook now explicitly installs the baseline PyTorch CUDA build from the [official CUDA 12.8 wheel index](https://download.pytorch.org/whl/cu128/) and applies `requirements-colab-constraints.txt` to keep PyTorch and NumPy fixed. `torch>=2.5` alone was insufficient because it accepted Colab's `2.11.0+cu130` build. Manual repair for that mismatch:
+
+```python
+import subprocess, sys
+subprocess.check_call([sys.executable, '-m', 'pip', 'install',
+                       'torch==2.11.0+cu128', '--index-url',
+                       'https://download.pytorch.org/whl/cu128'])
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'numpy==2.1.3'])
+```
+
+Training and gate subprocesses start fresh and verify all baseline environment differences together before freezing source/configs. If Colab requests a kernel restart after installation, restart the session and run the notebook again; persistent Drive data remains intact. No driver/toolkit replacement is part of this repair. Failed preflight records from older source are preserved under `reversible-v1/preflight-history` before refreshing configs, only when no training metrics or checkpoints exist. Source drift after any training has started still stops execution. No GPU installation/acceptance is claimed from local CPU tests.
 
 CUDA reconstruction/gradient/optimizer gates run first, followed by separate 65,536-target smokes and exactly 50M-target midpoint and Euler runs. Both use physical batch 29, accumulation 2, effective batch 58, seed 1337 and the frozen baseline target/evaluation stream. No baseline rerun is needed. A correctness failure stops the workflow; CPU success does not establish FP16 GPU acceptance.
 

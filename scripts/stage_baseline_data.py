@@ -8,6 +8,7 @@ import json
 import shutil
 import tempfile
 import uuid
+import zipfile
 from pathlib import Path
 
 RUN_NAME = "baseline_20m_fineweb_edu_50m_v1"
@@ -36,6 +37,28 @@ def baseline_record(root: Path) -> dict:
 def resolve_artifacts(root: Path, search_root: Path) -> tuple[Path, dict]:
     if (root / "configs/baseline_colab.json").is_file():
         return root, baseline_record(root)
+    restored = [p for p in sorted(root.parent.glob("baseline-recovery-*/artifacts"))
+                if (p / "configs/baseline_colab.json").is_file()
+                and (p / "runs" / RUN_NAME / "metrics.jsonl").is_file()]
+    if len(restored) == 1:
+        return restored[0], baseline_record(restored[0])
+    if len(restored) > 1:
+        raise ValueError(f"Multiple restored baselines found: {restored}; pass the intended root with --artifacts")
+    recovery = root.parent / "baseline-reference-recovery.zip"
+    if recovery.is_file():
+        destination = Path(tempfile.mkdtemp(prefix="baseline-recovery-", dir=root.parent))
+        with zipfile.ZipFile(recovery) as archive:
+            for name in archive.namelist():
+                target = (destination / name).resolve()
+                if not target.is_relative_to(destination.resolve()):
+                    raise ValueError(f"Invalid recovery archive entry: {name}")
+            archive.extractall(destination)
+        recovered = destination / "artifacts"
+        startup = baseline_record(recovered)
+        validate_data(recovered / "data" / DATA_NAME, startup["manifest_sha256"])
+        print(f"Restored verified baseline export from {recovery} to {recovered}", flush=True)
+        return recovered, startup
+    print(f"Searching for baseline config and run logs under {search_root} ...", flush=True)
     found = []
     for config in sorted(search_root.rglob("baseline_colab.json")):
         candidate = config.parent.parent
@@ -45,7 +68,8 @@ def resolve_artifacts(root: Path, search_root: Path) -> tuple[Path, dict]:
         raise FileNotFoundError(
             f"Expected baseline config at {root / 'configs/baseline_colab.json'}. "
             f"Found {len(found)} baseline artifact roots under {search_root}: {found}. "
-            "Restore the baseline export inside MyDrive/Reversability, or pass its "
+            "Upload baseline-reference-recovery.zip to MyDrive/Reversability and "
+            "rerun for automatic restoration, or restore the baseline export and pass its "
             "actual artifacts directory with --artifacts. Keep config, run logs and dataset together."
         )
     return found[0], baseline_record(found[0])
@@ -103,7 +127,12 @@ def stage_data(artifacts: Path, local: Path, search_root: Path) -> dict:
             "does not preserve the recorded baseline comparison.\n" + "\n".join(rejected)
         )
     local = local.resolve()
-    if source != local:
+    try:
+        validate_data(local, expected)
+        runtime_valid = True
+    except (OSError, ValueError, KeyError):
+        runtime_valid = False
+    if source != local and not runtime_valid:
         local.parent.mkdir(parents=True, exist_ok=True)
         stage = Path(tempfile.mkdtemp(prefix=local.name + ".staging-", dir=local.parent))
         shutil.copytree(source, stage, dirs_exist_ok=True)

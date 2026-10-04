@@ -1,6 +1,7 @@
 import hashlib
 import json
 import sys
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -73,3 +74,34 @@ def test_different_manifest_with_same_tokens_is_rejected(tmp_path):
         handle.write("\n")
     with pytest.raises(FileNotFoundError, match="Not the baseline manifest"):
         stage_data(root, tmp_path / "runtime", tmp_path)
+
+
+def test_recovery_zip_restores_into_new_folder(tmp_path):
+    export = tmp_path / "laptop/artifacts"
+    fixture(export)
+    drive = tmp_path / "MyDrive/Reversability"
+    drive.mkdir(parents=True)
+    with zipfile.ZipFile(drive / "baseline-reference-recovery.zip", "w") as archive:
+        for path in export.rglob("*"):
+            if path.is_file():
+                archive.write(path, Path("artifacts") / path.relative_to(export))
+    result = stage_data(drive / "artifacts", tmp_path / "runtime", drive.parent)
+    recovered = Path(result["artifacts"])
+    assert recovered.is_relative_to(drive)
+    assert recovered != export
+    assert (recovered / "data" / DATA_NAME / "train.bin").is_file()
+    assert (tmp_path / "runtime/manifest.json").is_file()
+    again = stage_data(drive / "artifacts", tmp_path / "runtime", drive.parent)
+    assert again == result
+    assert len(list(drive.glob("baseline-recovery-*"))) == 1
+    assert not list(tmp_path.glob("runtime.previous-*"))
+
+
+def test_recovery_zip_rejects_path_escape(tmp_path):
+    drive = tmp_path / "drive"
+    drive.mkdir()
+    with zipfile.ZipFile(drive / "baseline-reference-recovery.zip", "w") as archive:
+        archive.writestr("../escaped-file", "bad")
+    with pytest.raises(ValueError, match="Invalid recovery archive entry"):
+        stage_data(drive / "artifacts", tmp_path / "runtime", drive)
+    assert not (drive / "escaped-file").exists()

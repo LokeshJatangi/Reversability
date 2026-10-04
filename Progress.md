@@ -83,14 +83,14 @@ No restart or resume of this completed baseline is needed. Monetary cost and Col
 | Colab smoke validation | Complete: 65,536 targets; finite validation and preserved checkpoint |
 | Hardware and batch-size benchmarking | Complete on Tesla T4: batch 29 passes, batch 30 fails 10% headroom |
 | Full baseline training | Complete and audited: exactly 50M targets, final validation/checkpoints preserved |
-| Reversible comparisons | Implemented staged Colab workflow; CUDA correctness/smoke/matched training pending |
+| Reversible comparisons | User-provided Colab review reports both matched 50M runs complete; midpoint alone passes loss cutoff. Full artifacts/history inspection and maximum run pending |
 
 ## Next steps
 
 1. Preserve the imported baseline artifact bundle and its source snapshot; do not rerun or resume the completed baseline.
-2. Open the [reversible Colab notebook](https://colab.research.google.com/github/LokeshJatangi/Reversability/blob/main/notebooks/reversible_colab.ipynb) on a T4 with the baseline Drive artifacts intact. Run all cells to verify GPU/software/data controls and CUDA correctness before training. Methods, CPU gates and loss cutoff are already documented/frozen.
-3. Let the notebook run separate smokes and each accepted reversible variant for exactly 50M targets using physical batch 29, accumulation 2, effective batch 58, and the frozen data/evaluation controls. Bring its `artifacts/reversible-v1` results back for review.
-4. Hold the required focused planning checkpoint after both matched runs, then finish selected-variant capacity/training and the core report. Deferred extensions remain out of scope.
+2. Verify the saved Drive files under `MyDrive/Reversability/baseline-recovery-7bldlite/artifacts/reversible-v1`. The user-provided review output reports both matched runs complete and midpoint selected by the predeclared threshold.
+3. Complete the required planning review using CUDA correctness details, validation trajectories, resume/overflow/failure history and actual remaining Colab budget. Record `review-decision.json` before maximum-batch execution; a proposal alone is not a completed review.
+4. Run the selected midpoint capacity/maximum experiment, then finish the core report. Preserve frozen study source during these phases. Deferred extensions remain out of scope.
 
 For each future work entry, record the date, completed work, exact commands and configuration, artifacts, findings, blockers, and next steps. For experiments also include hardware, precision, seed, target counters, and whether the run is a probe, partial run, or completed full run.
 
@@ -147,3 +147,23 @@ For each future work entry, record the date, completed work, exact commands and 
 - Moved GPU/software/data preflight checks before source/config freezing and report all environment mismatches together. Earlier aborted preflight source/config/gate records are preserved under `preflight-history` before refresh, only if no training metrics or checkpoint evidence exists. Source changes after training still fail. Source snapshots include the Colab constraint file.
 - `OMP_NUM_THREADS=1 python3 -m pytest -q`: **33 passed in 5.85s**, existing Requests warning only. Tests cover complete mismatch reporting, preflight preservation, refusal to refresh training evidence, and no frozen study on environment failure. Python/notebook compilation and `git diff --check` passed. Actual CUDA 12.8 installation and CUDA gates remain to be verified on Colab, not this GPU-less host.
 - Next action: reopen the published reversible notebook and run all cells. Existing recovered data is reused; no ZIP reupload or baseline rerun is needed. If Colab requests a kernel restart after installation, restart and rerun. Retain installation/preflight logs and investigate any remaining Python/GPU mismatch without silently changing the protocol.
+
+## Matched results reported; planning review in progress — 2026-10-04
+
+Source: user-pasted Colab `review` output dated 2026-10-04 11:01:49 UTC. Full reversible artifacts have not been imported or independently inspected locally. The review command successfully loaded completed run summaries/checkpoints and the CUDA gate's passed flag, then wrote `review-proposal.json`. User is unsure where files are saved; verify Drive presence before proceeding.
+
+| Quantity | Baseline | Midpoint matched | Euler matched |
+| --- | ---: | ---: | ---: |
+| Committed targets | 50,000,000 | 50,000,000 | 50,000,000 |
+| Optimizer updates | 1,684 | 1,684 | 1,684 |
+| Final/best validation loss | 5.462294847167969 | 5.443028756835938 | 5.565652200683593 |
+| Reported process elapsed seconds | 1,119.090000186 | 1,399.972977653 | 1,401.316090763 |
+| Reported process valid targets/s | 44,679.158952086 | 35,714.975073178 | 35,680.743502186 |
+| Peak allocated GiB | 10.030179 | 8.735979 | 8.735124 |
+| Peak reserved GiB | 12.765625 | 11.517578 | 11.517578 |
+
+- Both variants use the frozen physical batch 29, accumulation 2 and effective batch 58. Both share the 20,340,736-parameter configuration; final/best losses coincide in supplied summaries.
+- Quality cutoff remains 5.562294847167969. Midpoint qualifies with loss delta -0.019266090332031; Euler fails with delta +0.103357353515625, exceeding the cutoff by 0.003357353515625. Do not relax it after seeing losses.
+- Midpoint saves **12.9031% allocated** and **9.7766% reserved** GPU memory in these summaries, but process elapsed is **25.0992% higher** and throughput **20.0635% lower**. It has not demonstrated a matched-batch time/cost advantage. These are total CUDA memory values, not isolated activation measurements; process-time totals require resume-history inspection before the final report.
+- Proposal selects midpoint. `planning_session_recorded` is still false and remaining Colab budget is unspecified. CUDA error details, trajectories, partial/failure/overflow/resume history and source/config/hardware evidence remain to inspect. No maximum search/full run has been reported.
+- Drive root: `/content/drive/MyDrive/Reversability/baseline-recovery-7bldlite/artifacts/reversible-v1`. Expected files include `review-proposal.json`, `correctness/cuda.json`, frozen configs/source snapshots, and each smoke/matched run's `metrics.jsonl`, console log, summary, latest/best checkpoints. The source code writes these directly to Drive. Keep the matched source unchanged until the maximum phase completes.

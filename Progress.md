@@ -1,6 +1,6 @@
 # Progress
 
-Last updated: 2026-10-04.
+Last updated: 2026-10-06. **Stages 1–6 complete; [core report](docs/core-report-2026-10-06.md) submitted for Admin review.** Earlier pending/no-results entries below are historical. No optional phase has started.
 
 ## Confirmed decisions
 
@@ -83,14 +83,25 @@ No restart or resume of this completed baseline is needed. Monetary cost and Col
 | Colab smoke validation | Complete: 65,536 targets; finite validation and preserved checkpoint |
 | Hardware and batch-size benchmarking | Complete on Tesla T4: batch 29 passes, batch 30 fails 10% headroom |
 | Full baseline training | Complete and audited: exactly 50M targets, final validation/checkpoints preserved |
-| Reversible comparisons | Both matched 50M runs fully artifact-audited; midpoint alone qualifies. Planning decision recorded; maximum run pending |
+| Reversible comparisons | Both matched 50M runs and maximum midpoint complete and audited; planning recorded; core report submitted |
 
 ## Next steps
 
 1. Preserve the imported baseline artifact bundle and its source snapshot; do not rerun or resume the completed baseline.
 2. Preserve the audited export `artifacts-20261004T112021Z-1-001` and corresponding Drive study root. Read the [matched-run audit and planning findings](docs/matched-run-audit-2026-10-04.md); no matched retraining is needed.
-3. Planning review completed: midpoint selected in [the recorded decision](docs/review-decision-2026-10-04.json). User reports under one hour of usage and can restart Colab; exact remaining quota is unknown. Run the existing reversible notebook setup/data/review cells, then [the maximum-stage handoff cell](docs/maximum-run-colab-cell.py) to persist the decision to the audited Drive study. Do not repeat completed training or delete its artifacts.
-4. Run the selected midpoint capacity/maximum experiment, then finish the core report. Preserve frozen study source during these phases. Deferred extensions remain out of scope.
+3. Preserve both parts of the final export `artifacts-20261004T124446Z-1-001` and `artifacts-20261004T124446Z-1-002`; part 002 contains two required checkpoints. No retraining is needed.
+4. Review the [completed core report](docs/core-report-2026-10-06.md). Admin acceptance/reprioritization is pending before any optimization/scaling extension; no utilization telemetry or B200/70B savings projection is established.
+
+## Maximum-run audit and core report — 2026-10-06
+
+- Resumed the preserved fully autonomous mode. No GPU experiment, frozen-source edit or optional extension was performed.
+- Audited the two-part final export without merging/moving files: all seven full/smoke streams, ten reversible checkpoints, four recorded dataset/tokenizer assets, 25 frozen source hashes, planning evidence and capacity reports pass. Baseline recovery has no checkpoints; original baseline checkpoint evidence remains in the earlier audited export.
+- Maximum midpoint completed exactly 50,000,000 targets, physical batch 33, accumulation 2, effective batch 66, 1,480 updates. Final/best validation 5.509121780029297; elapsed 1,254.684623 seconds; 39,850.651777 valid targets/s; peak allocated/reserved 9.891305/13.076172 GiB. One zero-cursor startup, no logged checkpoint resume/overflow. Effective batch changed from 58, an explicit optimization confound; maximum has three evaluations rather than four.
+- Capacity: 33 passes 10% headroom and separate confirmation; 34/36 execute three updates but fail headroom; 40/48/64 OOM. Absolute OOM boundary and GPU utilization are not measured. User-reported Drive loss has no recoverable partial training log in these exports; missing local data preflight and successful restaging are documented separately.
+- Completed [core report](docs/core-report-2026-10-06.md), [reproducible audit](docs/analysis/audit_core_results.py), [evidence JSON](docs/analysis/core-audit-2026-10-06.json) and four-run trajectory figure. Report includes an illustrative Google Cloud Iowa T4 accelerator-only USD 0.35/h estimate (price checked 2026-10-06), not measured Colab spend; costs for lost sessions, storage/transfer and compute units remain unknown.
+- Result: matched allocated-memory saving 12.9%, verified capacity +13.8%, but maximum midpoint remains 12.1% slower than baseline. No speed/money win or scaling inflection was established. Full-vocabulary logits/loss-buffer pressure is a code-grounded hypothesis needing profiling, not measured causal attribution.
+- Verification commands: `python3 docs/analysis/audit_core_results.py --parts artifacts-20261004T124446Z-1-001 artifacts-20261004T124446Z-1-002 --output docs/analysis/core-audit-2026-10-06.json`; `python3 docs/analysis/plot_matched_results.py --artifacts artifacts-20261004T124446Z-1-001/artifacts --include-maximum --output docs/figures/core-loss-2026-10-06.svg`. SVG trailing whitespace normalized mechanically. Admin acceptance of the submitted report remains pending.
+- Final checks: 43 local report/index links resolve; both analysis scripts compile; generated SVG parses as XML and its PNG rendering was visually inspected; `git diff --check` passes. Plot generation emitted only a Matplotlib cache-location warning and used a temporary cache; no experiment measurement is affected.
 
 For each future work entry, record the date, completed work, exact commands and configuration, artifacts, findings, blockers, and next steps. For experiments also include hardware, precision, seed, target counters, and whether the run is a probe, partial run, or completed full run.
 

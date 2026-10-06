@@ -1,0 +1,16 @@
+{
+  "experiment_name": "midpoint_20m_fineweb_edu_50m_v1_maximum",
+  "completed_full_target_budget": true,
+  "committed_targets": 50000000,
+  "target_budget": 50000000,
+  "optimizer_steps": 1480,
+  "final_validation_loss": 5.509121780029297,
+  "best_validation_loss": 5.509121780029297,
+  "best_validation_step": 1480,
+  "elapsed_seconds_this_process": 1254.684622967,
+  "end_to_end_targets_per_second_this_process": 39850.65177714788,
+  "peak_cuda_allocated_bytes": 10620708352,
+  "peak_cuda_reserved_bytes": 14040432640,
+  "checkpoint": "/content/drive/MyDrive/Reversability/baseline-recovery-7bldlite/artifacts/reversible-v1/runs/midpoint_20m_fineweb_edu_50m_v1_maximum/latest.pt",
+  "best_checkpoint": "/content/drive/MyDrive/Reversability/baseline-recovery-7bldlite/artifacts/reversible-v1/runs/midpoint_20m_fineweb_edu_50m_v1_maximum/best.pt"
+}

@@ -1,0 +1,16 @@
+{
+  "experiment_name": "baseline_20m_fineweb_edu_50m_v1_smoke",
+  "completed_full_target_budget": true,
+  "committed_targets": 65536,
+  "target_budget": 65536,
+  "optimizer_steps": 3,
+  "final_validation_loss": 10.6698841640625,
+  "best_validation_loss": 10.6698841640625,
+  "best_validation_step": 3,
+  "elapsed_seconds_this_process": 21.53365498999983,
+  "end_to_end_targets_per_second_this_process": 3043.4220307901624,
+  "peak_cuda_allocated_bytes": 10769822208,
+  "peak_cuda_reserved_bytes": 13706985472,
+  "checkpoint": "/content/drive/MyDrive/Reversability/artifacts/runs/baseline_20m_fineweb_edu_50m_v1_smoke/latest.pt",
+  "best_checkpoint": "/content/drive/MyDrive/Reversability/artifacts/runs/baseline_20m_fineweb_edu_50m_v1_smoke/best.pt"
+}

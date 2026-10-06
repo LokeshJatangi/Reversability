@@ -1,0 +1,8 @@
+
+[2026-10-04T12:04:14.116093+00:00] $ /usr/bin/python3 -u /content/Reversability/scripts/stage_baseline_data.py --artifacts /content/drive/MyDrive/Reversability/baseline-recovery-7bldlite/artifacts --search-root /content/drive/MyDrive --local-data /content/reversibility-data/data_fineweb_edu_gpt2_50m_v1 --receipt /content/reversibility-data/baseline-data-receipt.json
+{
+  "artifacts": "/content/drive/MyDrive/Reversability/baseline-recovery-7bldlite/artifacts",
+  "source_data": "/content/drive/MyDrive/Reversability/baseline-recovery-7bldlite/artifacts/data/data_fineweb_edu_gpt2_50m_v1",
+  "local_data": "/content/reversibility-data/data_fineweb_edu_gpt2_50m_v1",
+  "manifest_sha256": "71a12f5765cf37b7f5fb8753d51fa0828915a6db313ae20aef7fa9fb2e14df8a"
+}

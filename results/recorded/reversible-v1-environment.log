@@ -1,0 +1,30 @@
+
+[2026-10-04T12:03:43.299340+00:00] $ nvidia-smi
+Sun Oct  4 12:03:43 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.82.07              Driver Version: 580.82.07      CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla T4                       Off |   00000000:00:04.0 Off |                    0 |
+| N/A   45C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+
+[2026-10-04T12:03:43.503080+00:00] $ /usr/bin/python3 -m pip install -q torch==2.11.0+cu128 --index-url https://download.pytorch.org/whl/cu128
+
+[2026-10-04T12:03:46.241188+00:00] $ /usr/bin/python3 -m pip install -q -r /content/Reversability/requirements.txt -c /content/Reversability/requirements-colab-constraints.txt
+
+[2026-10-04T12:03:49.216144+00:00] $ /usr/bin/python3 -m pytest -q
+.................................                                        [100%]
+33 passed in 19.17s

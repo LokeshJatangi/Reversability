@@ -2,6 +2,16 @@
 
 Last updated: 2026-10-06. **Stages 1–6 complete; [core report](docs/core-report-2026-10-06.md) submitted for Admin review.** Earlier pending/no-results entries below are historical. No optional phase has started.
 
+## Submission preparation — 2026-10-06
+
+- User parked optimization/B200 projections and requested a detailed standalone README, versioned evidence and duplicate cleanup. Root README now explains every required study question without referencing an assignment.
+- Generated `results/recorded` and `results/local-correctness`: 66 distinct lightweight recorded files, each hash-verified against its original source; complete trajectories and original failures are retained. No checkpoint/dataset binary is added to Git. Original raw exports contain 56 duplicate-content groups (2,725,406,564 redundant bytes); originals have not been moved or deleted. Asked whether duplicate cleanup should include those ignored exports; previous commits do not contain them.
+- User clarified not to delete results and to deduplicate before committing. External archival plan was withdrawn; original raw storage locations remain unchanged. No destructive cleanup has occurred. Previous committed reports/audits remain in Git history.
+- Added an explicit Git-ignore exception for curated `results/**` so nested `runs/` and `data/` records are included; raw export directories remain ignored. Added reproducible submission export/hash-inventory utility outside the frozen execution-source manifest.
+- `python3 -m pytest -q`: 33 passed in 7.66 seconds; one inherited Requests dependency warning. No GPU training was launched. Frozen training code/method/protocol files are unchanged.
+- Submission verification passed: 66 original-byte-identical evidence files, no repeated content hashes within the curated export; root/result README links resolve and neither refers to an assignment. The plot reproduces from committed lightweight metrics alone. Exporter fixture tests pass for content deduplication, preservation of an existing manifest and rejection of conflicting split exports. All 25 frozen execution-source hashes remain unchanged.
+- Imported `nvidia-smi` stdout contains two trailing-padding lines. Added a scoped `.gitattributes` whitespace exemption for `results/recorded/**` instead of altering original evidence bytes. All 176 original raw files remain at their original paths/sizes; only lightweight deduplicated submission evidence is staged.
+
 ## Confirmed decisions
 
 - Session preference: **fully autonomous**; foundation creation took place in Default mode.

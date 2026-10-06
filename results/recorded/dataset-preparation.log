@@ -1,0 +1,71 @@
+
+[2026-09-27T18:54:12.699410+00:00] $ /usr/bin/python3 -u /content/Reversability/scripts/prepare_fineweb_edu.py --output-dir /content/fineweb-build/data_fineweb_edu_gpt2_50m_v1 --train-targets 50000000 --validation-targets 1000000
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (1055 > 1024). Running this sequence through the model will result in indexing errors
+documents=1,000 tokens=1,058,455/51,000,002
+documents=2,000 tokens=2,160,735/51,000,002
+documents=3,000 tokens=3,153,927/51,000,002
+documents=4,000 tokens=4,138,652/51,000,002
+documents=5,000 tokens=5,196,165/51,000,002
+documents=6,000 tokens=6,385,708/51,000,002
+documents=7,000 tokens=7,382,176/51,000,002
+documents=8,000 tokens=8,258,715/51,000,002
+documents=9,000 tokens=9,287,921/51,000,002
+documents=10,000 tokens=10,312,022/51,000,002
+documents=11,000 tokens=11,293,811/51,000,002
+documents=12,000 tokens=12,263,577/51,000,002
+documents=13,000 tokens=13,242,221/51,000,002
+documents=14,000 tokens=14,245,938/51,000,002
+documents=15,000 tokens=15,304,464/51,000,002
+documents=16,000 tokens=16,377,184/51,000,002
+documents=17,000 tokens=17,452,402/51,000,002
+documents=18,000 tokens=18,430,826/51,000,002
+documents=19,000 tokens=19,436,650/51,000,002
+documents=20,000 tokens=20,734,514/51,000,002
+documents=21,000 tokens=21,962,792/51,000,002
+documents=22,000 tokens=23,260,594/51,000,002
+documents=23,000 tokens=24,456,829/51,000,002
+documents=24,000 tokens=25,660,821/51,000,002
+documents=25,000 tokens=26,740,437/51,000,002
+documents=26,000 tokens=27,780,674/51,000,002
+documents=27,000 tokens=28,956,509/51,000,002
+documents=28,000 tokens=30,019,733/51,000,002
+documents=29,000 tokens=31,060,710/51,000,002
+documents=30,000 tokens=32,022,942/51,000,002
+documents=31,000 tokens=33,030,359/51,000,002
+documents=32,000 tokens=33,928,109/51,000,002
+documents=33,000 tokens=34,908,335/51,000,002
+documents=34,000 tokens=35,856,298/51,000,002
+documents=35,000 tokens=36,803,714/51,000,002
+documents=36,000 tokens=37,875,093/51,000,002
+documents=37,000 tokens=38,853,418/51,000,002
+documents=38,000 tokens=39,819,168/51,000,002
+documents=39,000 tokens=40,794,024/51,000,002
+documents=40,000 tokens=41,834,799/51,000,002
+documents=41,000 tokens=42,856,242/51,000,002
+documents=42,000 tokens=43,921,383/51,000,002
+documents=43,000 tokens=45,014,140/51,000,002
+documents=44,000 tokens=46,091,129/51,000,002
+documents=45,000 tokens=47,214,990/51,000,002
+documents=46,000 tokens=48,373,040/51,000,002
+documents=47,000 tokens=49,473,118/51,000,002
+documents=48,000 tokens=50,579,034/51,000,002
+{
+  "manifest": "/content/fineweb-build/data_fineweb_edu_gpt2_50m_v1/manifest.json",
+  "documents_consumed": 48464,
+  "elapsed_seconds": 160.86020833400005,
+  "tokens": {
+    "train": 50000001,
+    "validation": 1000001
+  },
+  "files": {
+    "train": {
+      "bytes": 100000002,
+      "sha256": "8d71872e4d7024801e459a6c44942907a89ae946105eb0905968746a0652c738"
+    },
+    "validation": {
+      "bytes": 2000002,
+      "sha256": "d5058ea280216a4504ac6c899028adfd1c5b236c3af9de5ff813dfc3e5ed61b1"
+    }
+  }
+}

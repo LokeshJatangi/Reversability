@@ -1,0 +1,455 @@
+
+[2026-09-27T18:57:22.440604+00:00] $ /usr/bin/python3 -u /content/Reversability/scripts/benchmark_batch_capacity.py --config /content/Reversability/configs/baseline.json --output /content/drive/MyDrive/Reversability/artifacts/benchmarks/baseline_batch_capacity.json --max-batch 256 --repetitions 3 --headroom-fraction 0.10
+{"physical_batch_size": 1, "repetitions": 3, "headroom_fraction": 0.1, "status": "pass", "valid_targets_per_microstep": 512, "startup_loss": 10.882110595703125, "measured_losses": [10.2391357421875, 10.598678588867188, 9.8743896484375], "startup_peak_allocated_bytes": 490628096, "startup_peak_reserved_bytes": 513802240, "steady_peak_allocated_bytes": 662142464, "steady_peak_reserved_bytes": 746586112, "fit_limit_reserved_bytes": 14073377587, "total_device_memory_bytes": 15637086208, "gpu_name": "Tesla T4", "compute_capability": [7, 5], "elapsed_seconds": 2.798681434999935, "torch_version": "2.11.0+cu128", "cuda_runtime": "12.8", "command": ["/usr/bin/python3", "/content/Reversability/scripts/benchmark_batch_capacity.py", "--config", "/content/Reversability/configs/baseline.json", "--candidate", "1", "--repetitions", "3", "--headroom-fraction", "0.1", "--result-path", "/tmp/batch-capacity-fye9lxq0/result.json"]}
+{"physical_batch_size": 2, "repetitions": 3, "headroom_fraction": 0.1, "status": "pass", "valid_targets_per_microstep": 1024, "startup_loss": 10.8778076171875, "measured_losses": [10.381019592285156, 10.567092895507812, 10.045539855957031], "startup_peak_allocated_bytes": 849140736, "startup_peak_reserved_bytes": 889192448, "steady_peak_allocated_bytes": 1020613632, "steady_peak_reserved_bytes": 1107296256, "fit_limit_reserved_bytes": 14073377587, "total_device_memory_bytes": 15637086208, "gpu_name": "Tesla T4", "compute_capability": [7, 5], "elapsed_seconds": 3.068050294999921, "torch_version": "2.11.0+cu128", "cuda_runtime": "12.8", "command": ["/usr/bin/python3", "/content/Reversability/scripts/benchmark_batch_capacity.py", "--config", "/content/Reversability/configs/baseline.json", "--candidate", "2", "--repetitions", "3", "--headroom-fraction", "0.1", "--result-path", "/tmp/batch-capacity-4xefxd0x/result.json"]}
+{"physical_batch_size": 4, "repetitions": 3, "headroom_fraction": 0.1, "status": "pass", "valid_targets_per_microstep": 2048, "startup_loss": 10.870044708251953, "measured_losses": [10.486339569091797, 10.525028228759766, 10.063419342041016], "startup_peak_allocated_bytes": 1568193536, "startup_peak_reserved_bytes": 1608515584, "steady_peak_allocated_bytes": 1742584832, "steady_peak_reserved_bytes": 2032140288, "fit_limit_reserved_bytes": 14073377587, "total_device_memory_bytes": 15637086208, "gpu_name": "Tesla T4", "compute_capability": [7, 5], "elapsed_seconds": 2.2010422799999105, "torch_version": "2.11.0+cu128", "cuda_runtime": "12.8", "command": ["/usr/bin/python3", "/content/Reversability/scripts/benchmark_batch_capacity.py", "--config", "/content/Reversability/configs/baseline.json", "--candidate", "4", "--repetitions", "3", "--headroom-fraction", "0.1", "--result-path", "/tmp/batch-capacity-ycrpacx2/result.json"]}
+{"physical_batch_size": 8, "repetitions": 3, "headroom_fraction": 0.1, "status": "pass", "valid_targets_per_microstep": 4096, "startup_loss": 10.871238708496094, "measured_losses": [10.50349235534668, 10.388860702514648, 10.104755401611328], "startup_peak_allocated_bytes": 2992241664, "startup_peak_reserved_bytes": 3051356160, "steady_peak_allocated_bytes": 3164052992, "steady_peak_reserved_bytes": 3877634048, "fit_limit_reserved_bytes": 14073377587, "total_device_memory_bytes": 15637086208, "gpu_name": "Tesla T4", "compute_capability": [7, 5], "elapsed_seconds": 2.7251416750000317, "torch_version": "2.11.0+cu128", "cuda_runtime": "12.8", "command": ["/usr/bin/python3", "/content/Reversability/scripts/benchmark_batch_capacity.py", "--config", "/content/Reversability/configs/baseline.json", "--candidate", "8", "--repetitions", "3", "--headroom-fraction", "0.1", "--result-path", "/tmp/batch-capacity-_luarpkv/result.json"]}
+{"physical_batch_size": 16, "repetitions": 3, "headroom_fraction": 0.1, "status": "pass", "valid_targets_per_microstep": 8192, "startup_loss": 10.873332023620605, "measured_losses": [10.588945388793945, 10.658561706542969, 10.382067680358887], "startup_peak_allocated_bytes": 5851675648, "startup_peak_reserved_bytes": 5928648704, "steady_peak_allocated_bytes": 6022151168, "steady_peak_reserved_bytes": 7577010176, "fit_limit_reserved_bytes": 14073377587, "total_device_memory_bytes": 15637086208, "gpu_name": "Tesla T4", "compute_capability": [7, 5], "elapsed_seconds": 3.086296987999958, "torch_version": "2.11.0+cu128", "cuda_runtime": "12.8", "command": ["/usr/bin/python3", "/content/Reversability/scripts/benchmark_batch_capacity.py", "--config", "/content/Reversability/configs/baseline.json", "--candidate", "16", "--repetitions", "3", "--headroom-fraction", "0.1", "--result-path", "/tmp/batch-capacity-dt_adxxm/result.json"]}
+{"physical_batch_size": 32, "repetitions": 3, "headroom_fraction": 0.1, "status": "insufficient_headroom", "valid_targets_per_microstep": 16384, "startup_loss": 10.87661361694336, "measured_losses": [10.689237594604492, 10.641481399536133, 10.342185974121094], "startup_peak_allocated_bytes": 11570969600, "startup_peak_reserved_bytes": 11729371136, "steady_peak_allocated_bytes": 11742215168, "steady_peak_reserved_bytes": 15026094080, "fit_limit_reserved_bytes": 14073377587, "total_device_memory_bytes": 15637086208, "gpu_name": "Tesla T4", "compute_capability": [7, 5], "elapsed_seconds": 3.1986008359999687, "torch_version": "2.11.0+cu128", "cuda_runtime": "12.8", "command": ["/usr/bin/python3", "/content/Reversability/scripts/benchmark_batch_capacity.py", "--config", "/content/Reversability/configs/baseline.json", "--candidate", "32", "--repetitions", "3", "--headroom-fraction", "0.1", "--result-path", "/tmp/batch-capacity-67pt0r82/result.json"]}
+{"physical_batch_size": 24, "repetitions": 3, "headroom_fraction": 0.1, "status": "pass", "valid_targets_per_microstep": 12288, "startup_loss": 10.873948097229004, "measured_losses": [10.608378410339355, 10.550593376159668, 10.297009468078613], "startup_peak_allocated_bytes": 8710208512, "startup_peak_reserved_bytes": 8803844096, "steady_peak_allocated_bytes": 8881347584, "steady_peak_reserved_bytes": 11274289152, "fit_limit_reserved_bytes": 14073377587, "total_device_memory_bytes": 15637086208, "gpu_name": "Tesla T4", "compute_capability": [7, 5], "elapsed_seconds": 3.496975277999809, "torch_version": "2.11.0+cu128", "cuda_runtime": "12.8", "command": ["/usr/bin/python3", "/content/Reversability/scripts/benchmark_batch_capacity.py", "--config", "/content/Reversability/configs/baseline.json", "--candidate", "24", "--repetitions", "3", "--headroom-fraction", "0.1", "--result-path", "/tmp/batch-capacity-0p5fnohx/result.json"]}
+{"physical_batch_size": 28, "repetitions": 3, "headroom_fraction": 0.1, "status": "pass", "valid_targets_per_microstep": 14336, "startup_loss": 10.875269889831543, "measured_losses": [10.632634162902832, 10.67840576171875, 10.39799976348877], "startup_peak_allocated_bytes": 10146626560, "startup_peak_reserved_bytes": 10345250816, "steady_peak_allocated_bytes": 10320851968, "steady_peak_reserved_bytes": 13228834816, "fit_limit_reserved_bytes": 14073377587, "total_device_memory_bytes": 15637086208, "gpu_name": "Tesla T4", "compute_capability": [7, 5], "elapsed_seconds": 3.0409731059999103, "torch_version": "2.11.0+cu128", "cuda_runtime": "12.8", "command": ["/usr/bin/python3", "/content/Reversability/scripts/benchmark_batch_capacity.py", "--config", "/content/Reversability/configs/baseline.json", "--candidate", "28", "--repetitions", "3", "--headroom-fraction", "0.1", "--result-path", "/tmp/batch-capacity-lxcqh69x/result.json"]}
+{"physical_batch_size": 30, "repetitions": 3, "headroom_fraction": 0.1, "status": "insufficient_headroom", "valid_targets_per_microstep": 15360, "startup_loss": 10.88006591796875, "measured_losses": [10.614285469055176, 10.585935592651367, 10.345602989196777], "startup_peak_allocated_bytes": 10863582208, "startup_peak_reserved_bytes": 11054088192, "steady_peak_allocated_bytes": 11035793408, "steady_peak_reserved_bytes": 14145290240, "fit_limit_reserved_bytes": 14073377587, "total_device_memory_bytes": 15637086208, "gpu_name": "Tesla T4", "compute_capability": [7, 5], "elapsed_seconds": 3.139466943000116, "torch_version": "2.11.0+cu128", "cuda_runtime": "12.8", "command": ["/usr/bin/python3", "/content/Reversability/scripts/benchmark_batch_capacity.py", "--config", "/content/Reversability/configs/baseline.json", "--candidate", "30", "--repetitions", "3", "--headroom-fraction", "0.1", "--result-path", "/tmp/batch-capacity-2k46hjjs/result.json"]}
+{"physical_batch_size": 29, "repetitions": 3, "headroom_fraction": 0.1, "status": "pass", "valid_targets_per_microstep": 14848, "startup_loss": 10.872748374938965, "measured_losses": [10.643950462341309, 10.652837753295898, 10.388385772705078], "startup_peak_allocated_bytes": 10514711552, "startup_peak_reserved_bytes": 10714349568, "steady_peak_allocated_bytes": 10686182400, "steady_peak_reserved_bytes": 13700694016, "fit_limit_reserved_bytes": 14073377587, "total_device_memory_bytes": 15637086208, "gpu_name": "Tesla T4", "compute_capability": [7, 5], "elapsed_seconds": 3.3087908759998754, "torch_version": "2.11.0+cu128", "cuda_runtime": "12.8", "command": ["/usr/bin/python3", "/content/Reversability/scripts/benchmark_batch_capacity.py", "--config", "/content/Reversability/configs/baseline.json", "--candidate", "29", "--repetitions", "3", "--headroom-fraction", "0.1", "--result-path", "/tmp/batch-capacity-t4h5cj59/result.json"]}
+{
+  "capacity_report": "/content/drive/MyDrive/Reversability/artifacts/benchmarks/baseline_batch_capacity.json",
+  "protocol": "fresh process per candidate; one optimizer-state initialization update; 3 repeated complete updates; reserved-memory headroom gate",
+  "selected_physical_batch_size": 29,
+  "search_was_capped": false,
+  "max_batch_tested": 256,
+  "headroom_fraction": 0.1,
+  "repetitions": 3,
+  "sequence_length": 512,
+  "precision": "fp16",
+  "config_sha256": "ba7aeefe1db779875ec23ffa8dce76520e42e1ec0784f40c6c41c1c47b839813",
+  "model": {
+    "vocab_size": 50257,
+    "max_sequence_length": 512,
+    "n_layers": 7,
+    "n_heads": 8,
+    "d_model": 256,
+    "d_ff": 1024,
+    "dropout": 0.0,
+    "bias": false
+  },
+  "parameter_count": 20340736,
+  "gpu_name": "Tesla T4",
+  "software": {
+    "python": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+    "platform": "Linux-6.6.122+-x86_64-with-glibc2.39",
+    "torch": "2.11.0+cu128",
+    "numpy": "2.1.3",
+    "cuda_runtime": "12.8"
+  },
+  "attempts": [
+    {
+      "physical_batch_size": 1,
+      "repetitions": 3,
+      "headroom_fraction": 0.1,
+      "status": "pass",
+      "valid_targets_per_microstep": 512,
+      "startup_loss": 10.882110595703125,
+      "measured_losses": [
+        10.2391357421875,
+        10.598678588867188,
+        9.8743896484375
+      ],
+      "startup_peak_allocated_bytes": 490628096,
+      "startup_peak_reserved_bytes": 513802240,
+      "steady_peak_allocated_bytes": 662142464,
+      "steady_peak_reserved_bytes": 746586112,
+      "fit_limit_reserved_bytes": 14073377587,
+      "total_device_memory_bytes": 15637086208,
+      "gpu_name": "Tesla T4",
+      "compute_capability": [
+        7,
+        5
+      ],
+      "elapsed_seconds": 2.798681434999935,
+      "torch_version": "2.11.0+cu128",
+      "cuda_runtime": "12.8",
+      "command": [
+        "/usr/bin/python3",
+        "/content/Reversability/scripts/benchmark_batch_capacity.py",
+        "--config",
+        "/content/Reversability/configs/baseline.json",
+        "--candidate",
+        "1",
+        "--repetitions",
+        "3",
+        "--headroom-fraction",
+        "0.1",
+        "--result-path",
+        "/tmp/batch-capacity-fye9lxq0/result.json"
+      ]
+    },
+    {
+      "physical_batch_size": 2,
+      "repetitions": 3,
+      "headroom_fraction": 0.1,
+      "status": "pass",
+      "valid_targets_per_microstep": 1024,
+      "startup_loss": 10.8778076171875,
+      "measured_losses": [
+        10.381019592285156,
+        10.567092895507812,
+        10.045539855957031
+      ],
+      "startup_peak_allocated_bytes": 849140736,
+      "startup_peak_reserved_bytes": 889192448,
+      "steady_peak_allocated_bytes": 1020613632,
+      "steady_peak_reserved_bytes": 1107296256,
+      "fit_limit_reserved_bytes": 14073377587,
+      "total_device_memory_bytes": 15637086208,
+      "gpu_name": "Tesla T4",
+      "compute_capability": [
+        7,
+        5
+      ],
+      "elapsed_seconds": 3.068050294999921,
+      "torch_version": "2.11.0+cu128",
+      "cuda_runtime": "12.8",
+      "command": [
+        "/usr/bin/python3",
+        "/content/Reversability/scripts/benchmark_batch_capacity.py",
+        "--config",
+        "/content/Reversability/configs/baseline.json",
+        "--candidate",
+        "2",
+        "--repetitions",
+        "3",
+        "--headroom-fraction",
+        "0.1",
+        "--result-path",
+        "/tmp/batch-capacity-4xefxd0x/result.json"
+      ]
+    },
+    {
+      "physical_batch_size": 4,
+      "repetitions": 3,
+      "headroom_fraction": 0.1,
+      "status": "pass",
+      "valid_targets_per_microstep": 2048,
+      "startup_loss": 10.870044708251953,
+      "measured_losses": [
+        10.486339569091797,
+        10.525028228759766,
+        10.063419342041016
+      ],
+      "startup_peak_allocated_bytes": 1568193536,
+      "startup_peak_reserved_bytes": 1608515584,
+      "steady_peak_allocated_bytes": 1742584832,
+      "steady_peak_reserved_bytes": 2032140288,
+      "fit_limit_reserved_bytes": 14073377587,
+      "total_device_memory_bytes": 15637086208,
+      "gpu_name": "Tesla T4",
+      "compute_capability": [
+        7,
+        5
+      ],
+      "elapsed_seconds": 2.2010422799999105,
+      "torch_version": "2.11.0+cu128",
+      "cuda_runtime": "12.8",
+      "command": [
+        "/usr/bin/python3",
+        "/content/Reversability/scripts/benchmark_batch_capacity.py",
+        "--config",
+        "/content/Reversability/configs/baseline.json",
+        "--candidate",
+        "4",
+        "--repetitions",
+        "3",
+        "--headroom-fraction",
+        "0.1",
+        "--result-path",
+        "/tmp/batch-capacity-ycrpacx2/result.json"
+      ]
+    },
+    {
+      "physical_batch_size": 8,
+      "repetitions": 3,
+      "headroom_fraction": 0.1,
+      "status": "pass",
+      "valid_targets_per_microstep": 4096,
+      "startup_loss": 10.871238708496094,
+      "measured_losses": [
+        10.50349235534668,
+        10.388860702514648,
+        10.104755401611328
+      ],
+      "startup_peak_allocated_bytes": 2992241664,
+      "startup_peak_reserved_bytes": 3051356160,
+      "steady_peak_allocated_bytes": 3164052992,
+      "steady_peak_reserved_bytes": 3877634048,
+      "fit_limit_reserved_bytes": 14073377587,
+      "total_device_memory_bytes": 15637086208,
+      "gpu_name": "Tesla T4",
+      "compute_capability": [
+        7,
+        5
+      ],
+      "elapsed_seconds": 2.7251416750000317,
+      "torch_version": "2.11.0+cu128",
+      "cuda_runtime": "12.8",
+      "command": [
+        "/usr/bin/python3",
+        "/content/Reversability/scripts/benchmark_batch_capacity.py",
+        "--config",
+        "/content/Reversability/configs/baseline.json",
+        "--candidate",
+        "8",
+        "--repetitions",
+        "3",
+        "--headroom-fraction",
+        "0.1",
+        "--result-path",
+        "/tmp/batch-capacity-_luarpkv/result.json"
+      ]
+    },
+    {
+      "physical_batch_size": 16,
+      "repetitions": 3,
+      "headroom_fraction": 0.1,
+      "status": "pass",
+      "valid_targets_per_microstep": 8192,
+      "startup_loss": 10.873332023620605,
+      "measured_losses": [
+        10.588945388793945,
+        10.658561706542969,
+        10.382067680358887
+      ],
+      "startup_peak_allocated_bytes": 5851675648,
+      "startup_peak_reserved_bytes": 5928648704,
+      "steady_peak_allocated_bytes": 6022151168,
+      "steady_peak_reserved_bytes": 7577010176,
+      "fit_limit_reserved_bytes": 14073377587,
+      "total_device_memory_bytes": 15637086208,
+      "gpu_name": "Tesla T4",
+      "compute_capability": [
+        7,
+        5
+      ],
+      "elapsed_seconds": 3.086296987999958,
+      "torch_version": "2.11.0+cu128",
+      "cuda_runtime": "12.8",
+      "command": [
+        "/usr/bin/python3",
+        "/content/Reversability/scripts/benchmark_batch_capacity.py",
+        "--config",
+        "/content/Reversability/configs/baseline.json",
+        "--candidate",
+        "16",
+        "--repetitions",
+        "3",
+        "--headroom-fraction",
+        "0.1",
+        "--result-path",
+        "/tmp/batch-capacity-dt_adxxm/result.json"
+      ]
+    },
+    {
+      "physical_batch_size": 32,
+      "repetitions": 3,
+      "headroom_fraction": 0.1,
+      "status": "insufficient_headroom",
+      "valid_targets_per_microstep": 16384,
+      "startup_loss": 10.87661361694336,
+      "measured_losses": [
+        10.689237594604492,
+        10.641481399536133,
+        10.342185974121094
+      ],
+      "startup_peak_allocated_bytes": 11570969600,
+      "startup_peak_reserved_bytes": 11729371136,
+      "steady_peak_allocated_bytes": 11742215168,
+      "steady_peak_reserved_bytes": 15026094080,
+      "fit_limit_reserved_bytes": 14073377587,
+      "total_device_memory_bytes": 15637086208,
+      "gpu_name": "Tesla T4",
+      "compute_capability": [
+        7,
+        5
+      ],
+      "elapsed_seconds": 3.1986008359999687,
+      "torch_version": "2.11.0+cu128",
+      "cuda_runtime": "12.8",
+      "command": [
+        "/usr/bin/python3",
+        "/content/Reversability/scripts/benchmark_batch_capacity.py",
+        "--config",
+        "/content/Reversability/configs/baseline.json",
+        "--candidate",
+        "32",
+        "--repetitions",
+        "3",
+        "--headroom-fraction",
+        "0.1",
+        "--result-path",
+        "/tmp/batch-capacity-67pt0r82/result.json"
+      ]
+    },
+    {
+      "physical_batch_size": 24,
+      "repetitions": 3,
+      "headroom_fraction": 0.1,
+      "status": "pass",
+      "valid_targets_per_microstep": 12288,
+      "startup_loss": 10.873948097229004,
+      "measured_losses": [
+        10.608378410339355,
+        10.550593376159668,
+        10.297009468078613
+      ],
+      "startup_peak_allocated_bytes": 8710208512,
+      "startup_peak_reserved_bytes": 8803844096,
+      "steady_peak_allocated_bytes": 8881347584,
+      "steady_peak_reserved_bytes": 11274289152,
+      "fit_limit_reserved_bytes": 14073377587,
+      "total_device_memory_bytes": 15637086208,
+      "gpu_name": "Tesla T4",
+      "compute_capability": [
+        7,
+        5
+      ],
+      "elapsed_seconds": 3.496975277999809,
+      "torch_version": "2.11.0+cu128",
+      "cuda_runtime": "12.8",
+      "command": [
+        "/usr/bin/python3",
+        "/content/Reversability/scripts/benchmark_batch_capacity.py",
+        "--config",
+        "/content/Reversability/configs/baseline.json",
+        "--candidate",
+        "24",
+        "--repetitions",
+        "3",
+        "--headroom-fraction",
+        "0.1",
+        "--result-path",
+        "/tmp/batch-capacity-0p5fnohx/result.json"
+      ]
+    },
+    {
+      "physical_batch_size": 28,
+      "repetitions": 3,
+      "headroom_fraction": 0.1,
+      "status": "pass",
+      "valid_targets_per_microstep": 14336,
+      "startup_loss": 10.875269889831543,
+      "measured_losses": [
+        10.632634162902832,
+        10.67840576171875,
+        10.39799976348877
+      ],
+      "startup_peak_allocated_bytes": 10146626560,
+      "startup_peak_reserved_bytes": 10345250816,
+      "steady_peak_allocated_bytes": 10320851968,
+      "steady_peak_reserved_bytes": 13228834816,
+      "fit_limit_reserved_bytes": 14073377587,
+      "total_device_memory_bytes": 15637086208,
+      "gpu_name": "Tesla T4",
+      "compute_capability": [
+        7,
+        5
+      ],
+      "elapsed_seconds": 3.0409731059999103,
+      "torch_version": "2.11.0+cu128",
+      "cuda_runtime": "12.8",
+      "command": [
+        "/usr/bin/python3",
+        "/content/Reversability/scripts/benchmark_batch_capacity.py",
+        "--config",
+        "/content/Reversability/configs/baseline.json",
+        "--candidate",
+        "28",
+        "--repetitions",
+        "3",
+        "--headroom-fraction",
+        "0.1",
+        "--result-path",
+        "/tmp/batch-capacity-lxcqh69x/result.json"
+      ]
+    },
+    {
+      "physical_batch_size": 30,
+      "repetitions": 3,
+      "headroom_fraction": 0.1,
+      "status": "insufficient_headroom",
+      "valid_targets_per_microstep": 15360,
+      "startup_loss": 10.88006591796875,
+      "measured_losses": [
+        10.614285469055176,
+        10.585935592651367,
+        10.345602989196777
+      ],
+      "startup_peak_allocated_bytes": 10863582208,
+      "startup_peak_reserved_bytes": 11054088192,
+      "steady_peak_allocated_bytes": 11035793408,
+      "steady_peak_reserved_bytes": 14145290240,
+      "fit_limit_reserved_bytes": 14073377587,
+      "total_device_memory_bytes": 15637086208,
+      "gpu_name": "Tesla T4",
+      "compute_capability": [
+        7,
+        5
+      ],
+      "elapsed_seconds": 3.139466943000116,
+      "torch_version": "2.11.0+cu128",
+      "cuda_runtime": "12.8",
+      "command": [
+        "/usr/bin/python3",
+        "/content/Reversability/scripts/benchmark_batch_capacity.py",
+        "--config",
+        "/content/Reversability/configs/baseline.json",
+        "--candidate",
+        "30",
+        "--repetitions",
+        "3",
+        "--headroom-fraction",
+        "0.1",
+        "--result-path",
+        "/tmp/batch-capacity-2k46hjjs/result.json"
+      ]
+    },
+    {
+      "physical_batch_size": 29,
+      "repetitions": 3,
+      "headroom_fraction": 0.1,
+      "status": "pass",
+      "valid_targets_per_microstep": 14848,
+      "startup_loss": 10.872748374938965,
+      "measured_losses": [
+        10.643950462341309,
+        10.652837753295898,
+        10.388385772705078
+      ],
+      "startup_peak_allocated_bytes": 10514711552,
+      "startup_peak_reserved_bytes": 10714349568,
+      "steady_peak_allocated_bytes": 10686182400,
+      "steady_peak_reserved_bytes": 13700694016,
+      "fit_limit_reserved_bytes": 14073377587,
+      "total_device_memory_bytes": 15637086208,
+      "gpu_name": "Tesla T4",
+      "compute_capability": [
+        7,
+        5
+      ],
+      "elapsed_seconds": 3.3087908759998754,
+      "torch_version": "2.11.0+cu128",
+      "cuda_runtime": "12.8",
+      "command": [
+        "/usr/bin/python3",
+        "/content/Reversability/scripts/benchmark_batch_capacity.py",
+        "--config",
+        "/content/Reversability/configs/baseline.json",
+        "--candidate",
+        "29",
+        "--repetitions",
+        "3",
+        "--headroom-fraction",
+        "0.1",
+        "--result-path",
+        "/tmp/batch-capacity-t4h5cj59/result.json"
+      ]
+    }
+  ]
+}

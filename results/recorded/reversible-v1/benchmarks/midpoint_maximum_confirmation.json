@@ -1,0 +1,29 @@
+{
+  "physical_batch_size": 33,
+  "repetitions": 3,
+  "headroom_fraction": 0.1,
+  "status": "pass",
+  "valid_targets_per_microstep": 16896,
+  "gradient_accumulation_steps": 2,
+  "valid_targets_per_optimizer_update": 33792,
+  "startup_loss": 10.877394676208496,
+  "measured_losses": [
+    10.617181777954102,
+    10.474896430969238,
+    10.34390640258789
+  ],
+  "startup_peak_allocated_bytes": 10442220544,
+  "startup_peak_reserved_bytes": 10626269184,
+  "steady_peak_allocated_bytes": 10605365760,
+  "steady_peak_reserved_bytes": 14040432640,
+  "fit_limit_reserved_bytes": 14073377587,
+  "total_device_memory_bytes": 15637086208,
+  "gpu_name": "Tesla T4",
+  "compute_capability": [
+    7,
+    5
+  ],
+  "elapsed_seconds": 4.947949205999976,
+  "torch_version": "2.11.0+cu128",
+  "cuda_runtime": "12.8"
+}

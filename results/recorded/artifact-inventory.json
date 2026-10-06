@@ -1,0 +1,98 @@
+[
+  {
+    "path": "benchmarks/baseline_batch_capacity.json",
+    "bytes": 13172
+  },
+  {
+    "path": "benchmarks/baseline_batch_capacity.log",
+    "bytes": 23011
+  },
+  {
+    "path": "colab-session.log",
+    "bytes": 2021
+  },
+  {
+    "path": "configs/baseline_colab.json",
+    "bytes": 1064
+  },
+  {
+    "path": "configs/baseline_smoke_colab.json",
+    "bytes": 1072
+  },
+  {
+    "path": "data/data_fineweb_edu_gpt2_50m_v1/manifest.json",
+    "bytes": 1947
+  },
+  {
+    "path": "data/data_fineweb_edu_gpt2_50m_v1/tokenizer/tokenizer.json",
+    "bytes": 3557680
+  },
+  {
+    "path": "data/data_fineweb_edu_gpt2_50m_v1/tokenizer/tokenizer_config.json",
+    "bytes": 315
+  },
+  {
+    "path": "data/data_fineweb_edu_gpt2_50m_v1/train.bin",
+    "bytes": 100000002
+  },
+  {
+    "path": "data/data_fineweb_edu_gpt2_50m_v1/validation.bin",
+    "bytes": 2000002
+  },
+  {
+    "path": "dataset-preparation.log",
+    "bytes": 3266
+  },
+  {
+    "path": "pip-freeze.log",
+    "bytes": 14148
+  },
+  {
+    "path": "runs/baseline_20m_fineweb_edu_50m_v1/best.pt",
+    "bytes": 244158355
+  },
+  {
+    "path": "runs/baseline_20m_fineweb_edu_50m_v1/console.log",
+    "bytes": 60123
+  },
+  {
+    "path": "runs/baseline_20m_fineweb_edu_50m_v1/latest.pt",
+    "bytes": 244159307
+  },
+  {
+    "path": "runs/baseline_20m_fineweb_edu_50m_v1/metrics.jsonl",
+    "bytes": 59918
+  },
+  {
+    "path": "runs/baseline_20m_fineweb_edu_50m_v1/run_summary.json",
+    "bytes": 749
+  },
+  {
+    "path": "runs/baseline_20m_fineweb_edu_50m_v1_smoke/best.pt",
+    "bytes": 244158355
+  },
+  {
+    "path": "runs/baseline_20m_fineweb_edu_50m_v1_smoke/console.log",
+    "bytes": 4215
+  },
+  {
+    "path": "runs/baseline_20m_fineweb_edu_50m_v1_smoke/latest.pt",
+    "bytes": 244159307
+  },
+  {
+    "path": "runs/baseline_20m_fineweb_edu_50m_v1_smoke/metrics.jsonl",
+    "bytes": 3984
+  },
+  {
+    "path": "runs/baseline_20m_fineweb_edu_50m_v1_smoke/run_summary.json",
+    "bytes": 752
+  },
+  {
+    "path": "source-manifest.json",
+    "bytes": 1728
+  },
+  {
+    "path": "source-snapshots/21258f051074dddaaec074f6dd31bd0a1ab7a96e95b6703fa08db42337501193.zip",
+    "bytes": 42970
+  }
+]

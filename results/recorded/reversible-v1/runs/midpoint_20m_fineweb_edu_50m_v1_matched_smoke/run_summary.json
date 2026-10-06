@@ -1,0 +1,16 @@
+{
+  "experiment_name": "midpoint_20m_fineweb_edu_50m_v1_matched_smoke",
+  "completed_full_target_budget": true,
+  "committed_targets": 65536,
+  "target_budget": 65536,
+  "optimizer_steps": 3,
+  "final_validation_loss": 10.69204800390625,
+  "best_validation_loss": 10.69204800390625,
+  "best_validation_step": 3,
+  "elapsed_seconds_this_process": 21.764736532000143,
+  "end_to_end_targets_per_second_this_process": 3011.109273188034,
+  "peak_cuda_allocated_bytes": 9380185600,
+  "peak_cuda_reserved_bytes": 12364808192,
+  "checkpoint": "/content/drive/MyDrive/Reversability/baseline-recovery-7bldlite/artifacts/reversible-v1/runs/midpoint_20m_fineweb_edu_50m_v1_matched_smoke/latest.pt",
+  "best_checkpoint": "/content/drive/MyDrive/Reversability/baseline-recovery-7bldlite/artifacts/reversible-v1/runs/midpoint_20m_fineweb_edu_50m_v1_matched_smoke/best.pt"
+}

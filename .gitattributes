@@ -1,0 +1,2 @@
+# Preserve imported console output byte-for-byte, including nvidia-smi padding.
+results/recorded/** -whitespace

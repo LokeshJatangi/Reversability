@@ -1,0 +1,2 @@
+
+[2026-10-04T12:06:10.332893+00:00] $ /usr/bin/python3 /content/Reversability/scripts/benchmark_batch_capacity.py --config /content/drive/MyDrive/Reversability/baseline-recovery-7bldlite/artifacts/reversible-v1/configs/midpoint_maximum.json --candidate 33 --result-path /content/drive/MyDrive/Reversability/baseline-recovery-7bldlite/artifacts/reversible-v1/benchmarks/midpoint_maximum_confirmation.json --repetitions 3 --headroom-fraction .10

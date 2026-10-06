@@ -1,0 +1,8 @@
+{
+  "physical_batch": 33,
+  "accumulation": 2,
+  "baseline_effective_batch": 58,
+  "maximum_effective_batch": 66,
+  "optimization_confound": true,
+  "expected_optimizer_updates": 1480
+}

@@ -1,0 +1,17 @@
+{
+  "validation_loss_max_delta_nats": 0.1,
+  "baseline_loss": 5.462294847167969,
+  "selection_order": [
+    "correctness",
+    "loss_acceptance",
+    "lowest_final_loss",
+    "highest_end_to_end_throughput",
+    "lowest_peak_allocated_memory"
+  ],
+  "physical_batch": 29,
+  "accumulation": 2,
+  "effective_batch": 58,
+  "target_budget": 50000000,
+  "midpoint_h": 0.5,
+  "boundary_states": "both equal input embedding"
+}

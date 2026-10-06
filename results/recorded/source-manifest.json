@@ -1,0 +1,20 @@
+{
+  ".gitignore": "27936bedc3fe3d987b911933834ef26ee2b5139c997b1bec8a5b8e9d4cdc8c98",
+  "AGENTS.md": "4f3f5dd05065a9c0dfc24d7c9ec71cbd1b9108399aaefde6f98f01ac9de9c8a8",
+  "Progress.md": "fc18e17e77af3e5556fc598990fcc38a04814a83f9709735449815285ac6ecbb",
+  "README.md": "b066c1dee925a7d77dfb92f48e3b1328f2398b04fbb16172e582b3aae1bd6e82",
+  "configs/baseline.json": "ba7aeefe1db779875ec23ffa8dce76520e42e1ec0784f40c6c41c1c47b839813",
+  "docs/README.md": "3ad6555ea0fa1b791364bbe4cb916c39d76c9735f72ee6a5c6a8db8cbed0ef27",
+  "docs/colab-handover.md": "d8941c4f10a1bf5fffe340c7113a80ecee381d8bbd3ca7180c9909436934183f",
+  "docs/experiment-plan.md": "4d4d4b5d8f0c7e055ab82dab6ed98a3b6bfcab27d881f8fa74221d2a190ff010",
+  "docs/research-roadmap.md": "e65f0c8305ef9bcd81b60f1a44f976782cadfbd05d6cb0c029de64bbd0498b81",
+  "docs/session-notes/2026-09-22-2256.md": "837ba40ba00f224b7770c65cc4f3bd40c507cc07ea710c0601275667fe17e0e4",
+  "notebooks/baseline_colab.ipynb": "fa810b3e29fcccb68b189713b11f8428c9209635d9c333d1f4d446e8345a4db6",
+  "requirements.txt": "487c1c0f2906c0898bf8a0341419f0912890c98d8382227fcf13d2bbb49fa3b0",
+  "scripts/benchmark_batch_capacity.py": "197ca53cf436eb371321e57e152d58c10d4f0b8bd8da8879e13826a4646c834d",
+  "scripts/prepare_fineweb_edu.py": "23f386c90d0a46e1006d17331b66caa6b23c7b09be994084c1bdd0f5ffde7902",
+  "scripts/train_baseline.py": "5bc4ad074314d580cf191da7d8c67b357337df083c6676a6896592059fe580cb",
+  "src/reversibility/__init__.py": "613180b47cb7225f9712da572945c1e81353b05679353f2ba0ffffe5e87eb078",
+  "src/reversibility/model.py": "f538225a3df9e2d5805fe11a277ff3377b16e14e9406a5fc4b22fe84d1258b26",
+  "tests/test_baseline.py": "3945e17a73622d21a4c3b32c692f82cc7c526e159a1231723998e977f7331a21"
+}

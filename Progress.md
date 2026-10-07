@@ -1,6 +1,15 @@
 # Progress
 
-Last updated: 2026-10-06. **Stages 1–6 complete; [core report](docs/core-report-2026-10-06.md) submitted for Admin review.** Earlier pending/no-results entries below are historical. No optional phase has started.
+Last updated: 2026-10-07. **Stages 1–6 complete; [core report](docs/core-report-2026-10-06.md) submitted for Admin review.** Earlier pending/no-results entries below are historical. No optional phase has started.
+
+## Authorized raw duplicate cleanup — 2026-10-07
+
+- User explicitly selected removal of verified raw duplicates while preserving every unique file. The standalone README and 66 distinct lightweight submission records were committed/pushed as `f939848`; prior reports remain in Git history. Ignored raw binaries were never in Git history.
+- Generated a frozen removal plan from the pre-cleanup inventory; preferred the final `artifacts-20261004T124446Z-1-001`/`002` paths and retained every unique SHA-256. Before deletion, verified all retained and duplicate files by size/hash and refused tracked, symlink, escaping or non-inventoried paths.
+- Removed exactly 80 byte-identical redundant raw files, reclaiming 2,725,406,564 bytes (2.73 GB). All 96 unique raw contents survived post-cleanup hash verification. No unique result or Google Drive content was deleted; final split export stays complete. Older local exports can be reconstructed via [the lookup](results/raw-deduplication.json), copying retained paths back to removed paths.
+- Cleanup command: `python3 docs/analysis/deduplicate_raw_results.py --inventory results/submission-manifest.json --plan results/raw-deduplication.json --apply`. The initial command without `--apply` generated the plan only.
+- Temporary-fixture tests pass: dry-run preservation, changed-evidence abort before deletion, preference for final export, unique-file preservation, restoration mapping and rejection of repeated application. Submission inventory remains the pre-cleanup snapshot; lookup status is `completed`. All training source and measured results remain unchanged.
+- Post-cleanup full audit regenerated identically to committed evidence: seven streams, ten reversible checkpoints, data assets, decision/capacity and 25 frozen source hashes pass. All 66 lightweight submission hashes remain unchanged; README links and no-assignment-reference checks pass. `python3 -m pytest -q`: 33 passed in 6.78 seconds, with the same unrelated Requests dependency warning. `git diff --check` passes.
 
 ## Submission preparation — 2026-10-06
 

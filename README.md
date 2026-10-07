@@ -255,13 +255,14 @@ At identical constant accelerator rates, matched midpoint costs **25.0992% more*
 | [Recorded results](results/recorded) | Original lightweight metrics, summaries, console/orchestration logs, frozen configs, capacity attempts, CUDA gates, manifests and source snapshots |
 | [CPU reports](results/local-correctness) | Original failed/accepted local numerical policies |
 | [Submission inventory](results/submission-manifest.json) | Copied-file checksums and original raw-file inventory |
+| [Raw duplicate lookup](results/raw-deduplication.json) | Removed duplicate paths, retained identical copies and recovery mapping |
 | [Structured audit](docs/analysis/core-audit-2026-10-06.json) | Commands, configs, summaries, events, probes and checkpoint integrity |
 | [Loss figure](docs/figures/core-loss-2026-10-06.svg) | All four full trajectories |
 | [Detailed methods](docs/reversible-methods.md) / [extended report](docs/core-report-2026-10-06.md) | Numerical policy, reconstruction and provenance |
 
 Final raw exports are split across `artifacts-20261004T124446Z-1-001` and `artifacts-20261004T124446Z-1-002`. Part 002 contains maximum midpoint `latest.pt` and matched Euler `best.pt`; it must not be omitted. Ten reversible checkpoints pass CPU checks for budgets/cursors, configuration/data hashes, finite model/optimizer tensors and resume fields. Baseline checkpoints were audited in an earlier export; the later recovery export intentionally omits them. Its inherited inventory is not a fresh complete export manifest.
 
-Raw exports, ZIPs, datasets, recovery bundles and checkpoints remain in their original local locations, excluded from Git. They have not been moved or deleted; Git history preserves committed reports/evidence, not these ignored binary exports. The curated submission contains one copy of each unique lightweight evidence file, verified byte-for-byte. Persistent Colab results remain at:
+Raw exports, ZIPs, datasets, recovery bundles and checkpoints are excluded from Git. Checksum-verified cleanup removed **80 byte-identical redundant raw copies (2,725,406,564 bytes)** while preserving **all 96 unique raw files** at their canonical original locations, preferring the final split export. No unique result was deleted. Git history preserves committed reports/evidence, not ignored binary exports. The curated submission contains one copy of each distinct lightweight evidence file, verified byte-for-byte. Persistent Colab results remain at:
 
 ```text
 MyDrive/Reversability/baseline-recovery-7bldlite/artifacts/
@@ -274,6 +275,8 @@ MyDrive/Reversability/baseline-recovery-7bldlite/artifacts/
 ```
 
 Colab `/content` is temporary. Drive logs/checkpoints persist but depend on a functioning mount. After replacing a runtime, stage the same hashed dataset again; preserve Drive artifacts. Do not overwrite an incomplete run or silently substitute a newly prepared manifest in a comparison.
+
+`submission-manifest.json` is the original pre-cleanup inventory; `raw-deduplication.json` records completed cleanup and current canonical copies. Older local export directories may now be partial. To restore a removed path, copy its `retained_path` to `original_path` from the lookup and verify the recorded SHA-256. The final two-part export remains complete, and no Google Drive content was changed.
 
 ## 13. Reproduction and verification
 

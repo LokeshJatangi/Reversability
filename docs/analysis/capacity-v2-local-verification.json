@@ -1,0 +1,165 @@
+{
+  "pytest": {
+    "passed": 64,
+    "skipped_cuda_runtime": 4,
+    "seconds": 10.56,
+    "warnings": "One inherited Requests dependency warning"
+  },
+  "fresh_process_cpu_smoke": {
+    "passed": 19,
+    "source_sha256": "47d2bd1ed5d65f98fc835c9df45bae2ac3cba76d48d361bd8f985ae03e2094b9",
+    "accumulation_steps": 1,
+    "cpu_capacity_not_gpu_evidence": true
+  },
+  "full_20m_parameter_fp32_gates": {
+    "shared": {
+      "limits": {
+        "gradient_relative_l2": 5e-05,
+        "loss_relative": 2e-06,
+        "optimizer_step_max_absolute": 5e-05,
+        "optimizer_relative_update_l2": 0.01
+      },
+      "records": [
+        {
+          "method": "baseline",
+          "update": 0,
+          "chunk_tokens": 37,
+          "gate_batch": 2,
+          "gate_context": 64,
+          "gradient_relative_l2": 1.3811865073876106e-07,
+          "loss_relative": 9.232180531171252e-08,
+          "parameter_max_absolute": 4.246830940246582e-07,
+          "optimizer_step_max_absolute": 4.246830940246582e-07,
+          "optimizer_relative_update_l2": 4.2118438335805113e-07,
+          "passed": true
+        },
+        {
+          "method": "baseline",
+          "update": 1,
+          "chunk_tokens": 37,
+          "gate_batch": 2,
+          "gate_context": 64,
+          "gradient_relative_l2": 5.66136691304564e-07,
+          "loss_relative": 1.8403424917323719e-07,
+          "parameter_max_absolute": 4.4330954551696777e-07,
+          "optimizer_step_max_absolute": 2.3655593395233154e-07,
+          "optimizer_relative_update_l2": 1.0281568717983742e-06,
+          "passed": true
+        },
+        {
+          "method": "midpoint",
+          "update": 0,
+          "chunk_tokens": 37,
+          "gate_batch": 2,
+          "gate_context": 64,
+          "gradient_relative_l2": 1.3985632563162653e-07,
+          "loss_relative": 9.21737992598537e-08,
+          "parameter_max_absolute": 1.2852251529693604e-07,
+          "optimizer_step_max_absolute": 1.2852251529693604e-07,
+          "optimizer_relative_update_l2": 3.849549440043021e-07,
+          "passed": true
+        },
+        {
+          "method": "midpoint",
+          "update": 1,
+          "chunk_tokens": 37,
+          "gate_batch": 2,
+          "gate_context": 64,
+          "gradient_relative_l2": 1.4420301113204914e-06,
+          "loss_relative": 0.0,
+          "parameter_max_absolute": 5.830079317092896e-07,
+          "optimizer_step_max_absolute": 5.830079317092896e-07,
+          "optimizer_relative_update_l2": 1.2303281861207766e-06,
+          "passed": true
+        }
+      ],
+      "source_sha256": {
+        "scripts/benchmark_optimized.py": "f335db8e7bf77a7392c9fdbc329d5ed1206cdbfc43c2ec5a9437707ada3df63a",
+        "scripts/profile_training.py": "2251d956655aafbf86845e89ca543ef7d000ca09fb8236125c6da081c0fb4aba",
+        "scripts/train_baseline.py": "a712664f71d5ab4bc78db7c5e2fce74bd7785a5e2ab08a717414db9c1db5b5ea",
+        "src/reversibility/__init__.py": "1746bfe7de447da3906fa93c10d7859621757234ee2fff5f527b50e5aff0caf9",
+        "src/reversibility/kernels.py": "9b12c5ffcb9ce986fb04c2c52aec4a7bfbe3340f7b743a4055fa2bd511c1e4dd",
+        "src/reversibility/model.py": "f538225a3df9e2d5805fe11a277ff3377b16e14e9406a5fc4b22fe84d1258b26",
+        "src/reversibility/optimized.py": "e6a0b7f23d42818a1672890322febe276540886aef92e3ae9c8fe2ef5e2b96c7",
+        "src/reversibility/reversible.py": "d7ee2b82a1e132a17639032b278c5e60a06bfe6cdc6cb0ddad9c72d4d650057b"
+      },
+      "cpu_smoke_only": true
+    },
+    "force_reuse": {
+      "limits": {
+        "gradient_relative_l2": 5e-05,
+        "loss_relative": 2e-06,
+        "optimizer_step_max_absolute": 5e-05,
+        "optimizer_relative_update_l2": 0.01
+      },
+      "records": [
+        {
+          "method": "baseline",
+          "update": 0,
+          "chunk_tokens": 37,
+          "gate_batch": 2,
+          "gate_context": 64,
+          "gradient_relative_l2": 1.3811865073876106e-07,
+          "loss_relative": 9.232180531171252e-08,
+          "parameter_max_absolute": 4.246830940246582e-07,
+          "optimizer_step_max_absolute": 4.246830940246582e-07,
+          "optimizer_relative_update_l2": 4.2118438335805113e-07,
+          "passed": true
+        },
+        {
+          "method": "baseline",
+          "update": 1,
+          "chunk_tokens": 37,
+          "gate_batch": 2,
+          "gate_context": 64,
+          "gradient_relative_l2": 5.66136691304564e-07,
+          "loss_relative": 1.8403424917323719e-07,
+          "parameter_max_absolute": 4.4330954551696777e-07,
+          "optimizer_step_max_absolute": 2.3655593395233154e-07,
+          "optimizer_relative_update_l2": 1.0281568717983742e-06,
+          "passed": true
+        },
+        {
+          "method": "midpoint",
+          "update": 0,
+          "chunk_tokens": 37,
+          "gate_batch": 2,
+          "gate_context": 64,
+          "gradient_relative_l2": 1.3985632563162653e-07,
+          "loss_relative": 9.21737992598537e-08,
+          "parameter_max_absolute": 1.2852251529693604e-07,
+          "optimizer_step_max_absolute": 1.2852251529693604e-07,
+          "optimizer_relative_update_l2": 3.849549440043021e-07,
+          "passed": true
+        },
+        {
+          "method": "midpoint",
+          "update": 1,
+          "chunk_tokens": 37,
+          "gate_batch": 2,
+          "gate_context": 64,
+          "gradient_relative_l2": 1.4420301113204914e-06,
+          "loss_relative": 0.0,
+          "parameter_max_absolute": 5.830079317092896e-07,
+          "optimizer_step_max_absolute": 5.830079317092896e-07,
+          "optimizer_relative_update_l2": 1.2303281861207766e-06,
+          "passed": true
+        }
+      ],
+      "source_sha256": {
+        "scripts/benchmark_optimized.py": "47d2bd1ed5d65f98fc835c9df45bae2ac3cba76d48d361bd8f985ae03e2094b9",
+        "scripts/profile_training.py": "2251d956655aafbf86845e89ca543ef7d000ca09fb8236125c6da081c0fb4aba",
+        "scripts/train_baseline.py": "a712664f71d5ab4bc78db7c5e2fce74bd7785a5e2ab08a717414db9c1db5b5ea",
+        "src/reversibility/__init__.py": "1746bfe7de447da3906fa93c10d7859621757234ee2fff5f527b50e5aff0caf9",
+        "src/reversibility/kernels.py": "9b12c5ffcb9ce986fb04c2c52aec4a7bfbe3340f7b743a4055fa2bd511c1e4dd",
+        "src/reversibility/model.py": "f538225a3df9e2d5805fe11a277ff3377b16e14e9406a5fc4b22fe84d1258b26",
+        "src/reversibility/optimized.py": "e6a0b7f23d42818a1672890322febe276540886aef92e3ae9c8fe2ef5e2b96c7",
+        "src/reversibility/reversible.py": "d7ee2b82a1e132a17639032b278c5e60a06bfe6cdc6cb0ddad9c72d4d650057b"
+      },
+      "cpu_smoke_only": true
+    }
+  },
+  "offline_sm75_kernels_compiled": 5,
+  "gpu_runtime_tested": false,
+  "validation_loss_ceiling": 5.56229485
+}

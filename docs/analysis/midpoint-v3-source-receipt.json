@@ -1,0 +1,9 @@
+{
+  "scripts/profile_training.py": "2251d956655aafbf86845e89ca543ef7d000ca09fb8236125c6da081c0fb4aba",
+  "scripts/benchmark_optimized.py": "47d2bd1ed5d65f98fc835c9df45bae2ac3cba76d48d361bd8f985ae03e2094b9",
+  "scripts/benchmark_midpoint_v3.py": "a0ef4001b06a78060c102d4e02cd4ef8589c1af927430fff01be6fb37387add3",
+  "src/reversibility/optimized.py": "e6a0b7f23d42818a1672890322febe276540886aef92e3ae9c8fe2ef5e2b96c7",
+  "src/reversibility/kernels.py": "9b12c5ffcb9ce986fb04c2c52aec4a7bfbe3340f7b743a4055fa2bd511c1e4dd",
+  "src/reversibility/optimized_v3.py": "238a3198539003fc44cd45fdacc0a459572c45e930a352b8152ff5a8191b1a48",
+  "src/reversibility/kernels_v3.py": "e01cba08c7bba9fe7e74aa71ce11dfabd476ccaf0ebe9b46324eb14fbcc33309"
+}
